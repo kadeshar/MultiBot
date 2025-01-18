@@ -10,7 +10,7 @@ MultiBot.addItem = function(pFrame, pInfo)
 	
 	if(tName == nil) then tName = string.sub(tInfo[4], 3, string.len(tInfo[4]) - 1) end
 	if(tLink == nil) then tLink = "|" .. tInfo[2] .. "|" .. tInfo[3] .. "|" .. tInfo[4] .. "|h|r" end
-	if(tRare == nil) then tRare = 4 end -- for Security
+	-- if(tRare == nil) then tRare = 4 end -- for Security
 	
 	local tButton = pFrame.addButton(tName, tX, tY, tIcon, tLink)
 	
@@ -48,7 +48,7 @@ MultiBot.addItem = function(pFrame, pInfo)
 			if(pButton.item.id == "6948") then return SendChatMessage("I cant drop this Item.", "SAY") end
 			if(MultiBot.isInside(pButton.item.info, "key")) then return SendChatMessage("I will not drop Keys.", "SAY") end
 			if(MultiBot.isInside(pButton.item.info, "Key")) then return SendChatMessage("I will not drop Keys.", "SAY") end
-			if(pButton.item.rare > 3) then return SendChatMessage("I will not drop that good Items.", "SAY") end
+			--if(pButton.item.rare > 3) then return SendChatMessage("I will not drop that good Items.", "SAY") end
 			SendChatMessage(tAction .. " " .. pButton.tip, "WHISPER", nil, tName)
 			pButton:Hide()
 			return
