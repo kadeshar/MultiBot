@@ -346,6 +346,22 @@ MultiBot.tips.stallow.follow =
 "|cffff0000左键点击执行跟随|r\n".. 
 "|cff999999(执行命令: 团队, 小队)|r";
 
+MultiBot.tips.expand.stay = 
+"停留\n|cffffffff".. 
+"使用此按钮，你可以立即发出停留命令。\n".. 
+"此命令可取消被动模式，在组合使用时应先下达停留命令。\n"..
+"执行命令时显示命令的接收者。|r\n\n".. 
+"|cffff0000左键点击执行停留|r\n".. 
+"|cff999999(执行命令: 团队, 小队)|r";
+
+MultiBot.tips.expand.follow = 
+"跟随\n|cffffffff".. 
+"使用此按钮，你可以立即发出跟随命令。\n"..
+"此命令可取消被动模式，在组合使用时应先下达跟随命令。\n"..
+"执行命令时显示命令的接收者。|r\n\n".. 
+"|cffff0000左键点击执行跟随|r\n".. 
+"|cff999999(执行命令: 团队, 小队)|r";
+
 -- 逃跑 --
 
 MultiBot.tips.flee.master = 
@@ -872,6 +888,12 @@ MultiBot.tips.main.lang.master =
 "|cff999999(执行命令: 系统)|r";
 ]]--
 
+MultiBot.tips.main.expand =
+"Expand-Switch\n|cffffffff"..
+"This Switch will expand or reduce the Stay-Follow-Control.\n"..
+"|cffff0000Left-Click to expand or reduce the Stay-Follow-Control|r\n"..
+"|cff999999(Execution-Order: System)|r";
+
 MultiBot.tips.main.release =
 "自动释放\n|cffffffff"..
 "此功能可以检测机器人的死亡。\n"..
@@ -985,7 +1007,6 @@ MultiBot.tips.game.appear =
 
 -- 任务 --
 
-MultiBot.tips.quests = {}
 MultiBot.tips.quests.master =
 "任务控制\n|cffffffff"..
 "此控制功能会显示当前任务清单。\n"..

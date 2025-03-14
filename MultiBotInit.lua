@@ -124,6 +124,8 @@ tLeft.addButton("Stay", -68, 0, "Interface\\AddOns\\MultiBot\\Icons\\command_fol
 .doLeft = function(pButton)
 	if(MultiBot.ActionToGroup("stay")) then
 		pButton.parent.buttons["Follow"].doShow()
+		pButton.parent.buttons["ExpandFollow"].setDisable()
+		pButton.parent.buttons["ExpandStay"].setEnable()
 		pButton.doHide()
 	end
 end
@@ -132,8 +134,24 @@ tLeft.addButton("Follow", -68, 0, "Interface\\AddOns\\MultiBot\\Icons\\command_s
 .doLeft = function(pButton)
 	if(MultiBot.ActionToGroup("follow")) then
 		pButton.parent.buttons["Stay"].doShow()
+		pButton.parent.buttons["ExpandFollow"].setEnable()
+		pButton.parent.buttons["ExpandStay"].setDisable()
 		pButton.doHide()
 	end
+end
+
+tLeft.addButton("ExpandStay", -68, 0, "Interface\\AddOns\\MultiBot\\Icons\\command_stay.blp", MultiBot.tips.expand.stay).doHide().setDisable()
+.doLeft = function(pButton)
+	MultiBot.ActionToGroup("stay")
+	pButton.parent.buttons["ExpandFollow"].setDisable()
+	pButton.setEnable()
+end
+
+tLeft.addButton("ExpandFollow", -102, 0, "Interface\\AddOns\\MultiBot\\Icons\\command_follow.blp", MultiBot.tips.expand.follow).doHide()
+.doLeft = function(pButton)
+	MultiBot.ActionToGroup("follow")
+	pButton.parent.buttons["ExpandStay"].setDisable()
+	pButton.setEnable()
 end
 
 -- FLEE --
@@ -862,6 +880,8 @@ tMain.addButton("Creator", 0, 102, "inv_helmet_145a", MultiBot.tips.main.creator
 		MultiBot.doRepos("Mode", -34)
 		MultiBot.doRepos("Stay", -34)
 		MultiBot.doRepos("Follow", -34)
+		MultiBot.doRepos("ExpandStay", -34)
+		MultiBot.doRepos("ExpandFollow", -34)
 		MultiBot.doRepos("Flee", -34)
 		MultiBot.doRepos("Format", -34)
 		MultiBot.doRepos("Beast", -34)
@@ -873,6 +893,8 @@ tMain.addButton("Creator", 0, 102, "inv_helmet_145a", MultiBot.tips.main.creator
 		MultiBot.doRepos("Mode", 34)
 		MultiBot.doRepos("Stay", 34)
 		MultiBot.doRepos("Follow", 34)
+		MultiBot.doRepos("ExpandStay", 34)
+		MultiBot.doRepos("ExpandFollow", 34)
 		MultiBot.doRepos("Flee", 34)
 		MultiBot.doRepos("Format", 34)
 		MultiBot.doRepos("Beast", 34)
@@ -889,6 +911,8 @@ tMain.addButton("Beast", 0, 136, "ability_mount_swiftredwindrider", MultiBot.tip
 		MultiBot.doRepos("Mode", -34)
 		MultiBot.doRepos("Stay", -34)
 		MultiBot.doRepos("Follow", -34)
+		MultiBot.doRepos("ExpandStay", -34)
+		MultiBot.doRepos("ExpandFollow", -34)
 		MultiBot.doRepos("Flee", -34)
 		MultiBot.doRepos("Format", -34)
 		MultiBot.frames["MultiBar"].frames["Left"].frames["Beast"]:Hide()
@@ -899,6 +923,8 @@ tMain.addButton("Beast", 0, 136, "ability_mount_swiftredwindrider", MultiBot.tip
 		MultiBot.doRepos("Mode", 34)
 		MultiBot.doRepos("Stay", 34)
 		MultiBot.doRepos("Follow", 34)
+		MultiBot.doRepos("ExpandStay", 34)
+		MultiBot.doRepos("ExpandFollow", 34)
 		MultiBot.doRepos("Flee", 34)
 		MultiBot.doRepos("Format", 34)
 		MultiBot.frames["MultiBar"].frames["Left"].frames["Beast"]:Hide()
@@ -941,7 +967,28 @@ tFrame.addButton("None", -60, 0, "Interface\\AddOns\\MultiBot\\Icons\\language_n
 end
 ]]--
 
-tMain.addButton("Release", 0, 170, "achievement_bg_xkills_avgraveyard", MultiBot.tips.main.release).setDisable()
+tMain.addButton("Expand", 0, 170, "Interface\\AddOns\\MultiBot\\Icons\\command_follow.blp", MultiBot.tips.main.expand).setDisable()
+.doLeft = function(pButton)
+	if(MultiBot.OnOffSwitch(pButton)) then
+		MultiBot.doRepos("Tanker", -34)
+		MultiBot.doRepos("Attack", -34)
+		MultiBot.doRepos("Mode", -34)
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["ExpandFollow"]:Show()
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["ExpandStay"]:Show()
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["Follow"]:Hide()
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["Stay"]:Hide()
+	else
+		MultiBot.doRepos("Tanker", 34)
+		MultiBot.doRepos("Attack", 34)
+		MultiBot.doRepos("Mode", 34)
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["ExpandFollow"]:Hide()
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["ExpandStay"]:Hide()
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["Follow"]:Show()
+		MultiBot.frames["MultiBar"].frames["Left"].buttons["Stay"]:Show()
+	end
+end
+
+tMain.addButton("Release", 0, 204, "achievement_bg_xkills_avgraveyard", MultiBot.tips.main.release).setDisable()
 .doLeft = function(pButton)
 	if(MultiBot.OnOffSwitch(pButton)) then
 		MultiBot.auto.release = true
@@ -950,7 +997,7 @@ tMain.addButton("Release", 0, 170, "achievement_bg_xkills_avgraveyard", MultiBot
 	end
 end
 
-tMain.addButton("Stats", 0, 204, "inv_scroll_08", MultiBot.tips.main.stats).setDisable()
+tMain.addButton("Stats", 0, 238, "inv_scroll_08", MultiBot.tips.main.stats).setDisable()
 .doLeft = function(pButton)
 	if(GetNumRaidMembers() > 0) then return SendChatMessage(MultiBot.info.stats, "SAY") end
 	if(MultiBot.OnOffSwitch(pButton)) then
@@ -964,7 +1011,7 @@ tMain.addButton("Stats", 0, 204, "inv_scroll_08", MultiBot.tips.main.stats).setD
 	end
 end
 
-local tButton = tMain.addButton("Reward", 0, 238, "Interface\\AddOns\\MultiBot\\Icons\\reward.blp", MultiBot.tips.main.reward).setDisable()
+local tButton = tMain.addButton("Reward", 0, 272, "Interface\\AddOns\\MultiBot\\Icons\\reward.blp", MultiBot.tips.main.reward).setDisable()
 tButton.doRight = function(pButton)
 	if(table.getn(MultiBot.reward.rewards) > 0 and table.getn(MultiBot.reward.units) > 0) then MultiBot.reward:Show() end
 end
@@ -972,12 +1019,12 @@ tButton.doLeft = function(pButton)
 	MultiBot.reward.state = MultiBot.OnOffSwitch(pButton)
 end
 
-tMain.addButton("Reset", 0, 272, "inv_misc_tournaments_symbol_gnome", MultiBot.tips.main.reset)
+tMain.addButton("Reset", 0, 306, "inv_misc_tournaments_symbol_gnome", MultiBot.tips.main.reset)
 .doLeft = function(pButton)
 	MultiBot.ActionToTargetOrGroup("reset botAI")
 end
 
-tMain.addButton("Actions", 0, 306, "inv_helmet_02", MultiBot.tips.main.action)
+tMain.addButton("Actions", 0, 340, "inv_helmet_02", MultiBot.tips.main.action)
 .doLeft = function(pButton)
 	MultiBot.ActionToTargetOrGroup("reset")
 end

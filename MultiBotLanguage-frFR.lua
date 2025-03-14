@@ -347,6 +347,21 @@ MultiBot.tips.stallow.follow =
 "|cffff0000Clic gauche pour exécuter la commande Suivre|r\n"..
 "|cff999999(Ordre d'exécution : Raid, Groupe)|r";
 
+MultiBot.tips.expand.stay = 
+"Rester\n|cffffffff"..
+"Avec ce bouton, vous pouvez ordonner aux bots de Rester.\n"..
+"Cette commande annule le mode passif, en combinaison Rester doit être commandé en premier.\n"..
+"L'ordre d'exécution montre les destinataires des commandes.|r\n\n"..
+"|cffff0000Clic gauche pour exécuter la commande Rester|r\n"..
+"|cff999999(Ordre d'exécution : Raid, Groupe)|r";
+
+MultiBot.tips.expand.follow = 
+"Suivre\n|cffffffff"..
+"Avec ce bouton, vous pouvez ordonner aux bots de vous Suivre.\n"..
+"Cette commande annule le mode passif, en combinaison Suivre doit être commandé en premier.\n"..
+"L'ordre d'exécution montre les destinataires des commandes.|r\n\n"..
+"|cffff0000Clic gauche pour exécuter la commande Suivre|r\n"..
+"|cff999999(Ordre d'exécution : Raid, Groupe)|r";
 
 -- FUIR --
 
@@ -644,7 +659,6 @@ MultiBot.tips.unit.button =
 
 -- UNITÉS --
 
-MultiBot.tips.units = {}
 MultiBot.tips.units.master =
 "Contrôle des unités\n|cffffffff"..
 "Dans ce contrôle, vous trouverez les Playerbots.\n"..
@@ -883,6 +897,12 @@ MultiBot.tips.main.lang.master =
 "|cff999999(Ordre d'exécution : Système)|r"; 
 ]]--
 
+MultiBot.tips.main.expand =
+"Contrôle Rester-Suivre\n|cffffffff" ..
+"Ce bouton développera ou réduira la fonction Rester-Suivre.\n" ..
+"|cffff0000Clic gauche pour développer ou réduire le Contrôle Rester-Suivre|r\n" ..
+"|cff999999(Ordre d'exécution : Système)|r";
+
 MultiBot.tips.main.release =
 "Auto-Réanimation\n|cffffffff"..
 "Cette fonctionnalité détecte la mort des Bots.\n"..
@@ -997,7 +1017,6 @@ MultiBot.tips.game.appear =
 
 -- QUESTS --
 
-MultiBot.tips.quests = {}
 MultiBot.tips.quests.master = 
 "Contrôle des Quêtes\n|cffffffff"..
 "Ce contrôle affiche la liste actuelle des quêtes.\n"..
