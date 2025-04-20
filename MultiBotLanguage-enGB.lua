@@ -231,6 +231,9 @@ MultiBot.tips.move.reward =
 MultiBot.tips.move.talent =
 "Right-Click to drag and move the Talents";
 
+MultiBot.tips.move.raidus =
+"Right-Click to drag and move the Raidus";
+
 -- TANKER --
 
 MultiBot.tips.tanker.master = 
@@ -858,6 +861,12 @@ MultiBot.tips.main.rtsc =
 "RTSC-Switch\n|cffffffff"..
 "This Switch will enable or disable the RTSC-Control.|r\n\n"..
 "|cffff0000Left-Click to enable or disable the RTSC-Control|r\n"..
+"|cff999999(Execution-Order: System)|r";
+
+MultiBot.tips.main.raidus =
+"Raidus-Switch\n|cffffffff"..
+"This Switch will open or close the Raid-Composer.|r\n\n"..
+"|cffff0000Left-Click to open or close the Raid-Composer|r\n"..
 "|cff999999(Execution-Order: System)|r";
 
 MultiBot.tips.main.creator =
@@ -1890,6 +1899,12 @@ MultiBot.tips.paladin.naura.barmor =
 "|cffff0000Left-Click to enable Armor-Aura|r\n"..
 "|cff999999(Execution-Order: Bot)|r";
 
+MultiBot.tips.paladin.naura.bcast =
+"Concentration-Aura|cffffffff\n"..
+"It enables the Concentration-Aura as Non-Combat-Aura.|r\n\n"..
+"|cffff0000Left-Click to enable Armor-Aura|r\n"..
+"|cff999999(Execution-Order: Bot)|r";
+
 MultiBot.tips.paladin.caura.master =
 "Combat-Aura|cffffffff\n"..
 "This Control allows you to select, enable or disable the default Combat-Aura.|r\n\n"..
@@ -1932,6 +1947,12 @@ MultiBot.tips.paladin.caura.barmor =
 "Armor-Aura|cffffffff\n"..
 "It enables the Armor-Aura as Combat-Aura.|r\n\n"..
 "|cffff0000Left-Click to enable Armor-Aura|r\n"..
+"|cff999999(Execution-Order: Bot)|r";
+
+MultiBot.tips.paladin.caura.bcast =
+"Concentration-Aura|cffffffff\n"..
+"It enables the Concentration-Aura as Combat-Aura.|r\n\n"..
+"|cffff0000Left-Click to enable Concentration-Aura|r\n"..
 "|cff999999(Execution-Order: Bot)|r";
 
 MultiBot.tips.paladin.dps.master =

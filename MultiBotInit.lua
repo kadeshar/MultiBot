@@ -872,7 +872,17 @@ tMain.addButton("RTSC", 0, 68, "ability_hunter_markedfordeath", MultiBot.tips.ma
 	end
 end
 
-tMain.addButton("Creator", 0, 102, "inv_helmet_145a", MultiBot.tips.main.creator).setDisable()
+tMain.addButton("Raidus", 0, 102, "inv_misc_head_dragon_01", MultiBot.tips.main.raidus).setDisable()
+.doLeft = function(pButton)
+	if(MultiBot.OnOffSwitch(pButton)) then
+		MultiBot.raidus.setRaidus()
+		MultiBot.raidus:Show()
+	else
+		MultiBot.raidus:Hide()
+	end
+end
+
+tMain.addButton("Creator", 0, 136, "inv_helmet_145a", MultiBot.tips.main.creator).setDisable()
 .doLeft = function(pButton)
 	if(MultiBot.OnOffSwitch(pButton)) then
 		MultiBot.doRepos("Tanker", -34)
@@ -903,7 +913,7 @@ tMain.addButton("Creator", 0, 102, "inv_helmet_145a", MultiBot.tips.main.creator
 	end
 end
 
-tMain.addButton("Beast", 0, 136, "ability_mount_swiftredwindrider", MultiBot.tips.main.beast).setDisable()
+tMain.addButton("Beast", 0, 170, "ability_mount_swiftredwindrider", MultiBot.tips.main.beast).setDisable()
 .doLeft = function(pButton)
 	if(MultiBot.OnOffSwitch(pButton)) then
 		MultiBot.doRepos("Tanker", -34)
@@ -967,7 +977,7 @@ tFrame.addButton("None", -60, 0, "Interface\\AddOns\\MultiBot\\Icons\\language_n
 end
 ]]--
 
-tMain.addButton("Expand", 0, 170, "Interface\\AddOns\\MultiBot\\Icons\\command_follow.blp", MultiBot.tips.main.expand).setDisable()
+tMain.addButton("Expand", 0, 204, "Interface\\AddOns\\MultiBot\\Icons\\command_follow.blp", MultiBot.tips.main.expand).setDisable()
 .doLeft = function(pButton)
 	if(MultiBot.OnOffSwitch(pButton)) then
 		MultiBot.doRepos("Tanker", -34)
@@ -988,7 +998,7 @@ tMain.addButton("Expand", 0, 170, "Interface\\AddOns\\MultiBot\\Icons\\command_f
 	end
 end
 
-tMain.addButton("Release", 0, 204, "achievement_bg_xkills_avgraveyard", MultiBot.tips.main.release).setDisable()
+tMain.addButton("Release", 0, 238, "achievement_bg_xkills_avgraveyard", MultiBot.tips.main.release).setDisable()
 .doLeft = function(pButton)
 	if(MultiBot.OnOffSwitch(pButton)) then
 		MultiBot.auto.release = true
@@ -997,7 +1007,7 @@ tMain.addButton("Release", 0, 204, "achievement_bg_xkills_avgraveyard", MultiBot
 	end
 end
 
-tMain.addButton("Stats", 0, 238, "inv_scroll_08", MultiBot.tips.main.stats).setDisable()
+tMain.addButton("Stats", 0, 272, "inv_scroll_08", MultiBot.tips.main.stats).setDisable()
 .doLeft = function(pButton)
 	if(GetNumRaidMembers() > 0) then return SendChatMessage(MultiBot.info.stats, "SAY") end
 	if(MultiBot.OnOffSwitch(pButton)) then
@@ -1011,7 +1021,7 @@ tMain.addButton("Stats", 0, 238, "inv_scroll_08", MultiBot.tips.main.stats).setD
 	end
 end
 
-local tButton = tMain.addButton("Reward", 0, 272, "Interface\\AddOns\\MultiBot\\Icons\\reward.blp", MultiBot.tips.main.reward).setDisable()
+local tButton = tMain.addButton("Reward", 0, 306, "Interface\\AddOns\\MultiBot\\Icons\\reward.blp", MultiBot.tips.main.reward).setDisable()
 tButton.doRight = function(pButton)
 	if(table.getn(MultiBot.reward.rewards) > 0 and table.getn(MultiBot.reward.units) > 0) then MultiBot.reward:Show() end
 end
@@ -1019,12 +1029,12 @@ tButton.doLeft = function(pButton)
 	MultiBot.reward.state = MultiBot.OnOffSwitch(pButton)
 end
 
-tMain.addButton("Reset", 0, 306, "inv_misc_tournaments_symbol_gnome", MultiBot.tips.main.reset)
+tMain.addButton("Reset", 0, 340, "inv_misc_tournaments_symbol_gnome", MultiBot.tips.main.reset)
 .doLeft = function(pButton)
 	MultiBot.ActionToTargetOrGroup("reset botAI")
 end
 
-tMain.addButton("Actions", 0, 340, "inv_helmet_02", MultiBot.tips.main.action)
+tMain.addButton("Actions", 0, 374, "inv_helmet_02", MultiBot.tips.main.action)
 .doLeft = function(pButton)
 	MultiBot.ActionToTargetOrGroup("reset")
 end
@@ -1901,7 +1911,7 @@ tOverlay.wowButton("<", -159, 309, 15, 18, 13)
 	local tIndex = 1
 	
 	for i = MultiBot.spellbook.from, MultiBot.spellbook.to do
-		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i])
+		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i], MultiBot.spells[pButton.getName()][MultiBot.spellbook.spells[i][1]])
 		tIndex = tIndex + 1
 	end
 end
@@ -1918,7 +1928,7 @@ tOverlay.wowButton(">", -59, 309, 15, 18, 11)
 	local tIndex = 1
 	
 	for i = MultiBot.spellbook.from, MultiBot.spellbook.to do
-		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i])
+		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i], MultiBot.spells[pButton.getName()][MultiBot.spellbook.spells[i][1]])
 		tIndex = tIndex + 1
 	end
 end
@@ -1930,7 +1940,7 @@ tOverlay.wowButton("X", 16, 336, 15, 18, 11)
 	tButton.doLeft(tButton)
 end
 
-tOverlay.addText("R01", "|cff402000Rank|r", "TOPLEFT", 30, -16, 11)
+tOverlay.addText("R01", "|cff402000Rank|r", "TOPLEFT", 44, -16, 11)
 tOverlay.addText("T01", "|cffffcc00Title|r", "TOPLEFT", 30, -2, 12)
 local tButton = tOverlay.addButton("S01", -230, 264, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -1940,7 +1950,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R02", "|cff402000Rank|r", "TOPLEFT", 159, -16, 11)
+tOverlay.addText("R02", "|cff402000Rank|r", "TOPLEFT", 172, -16, 11)
 tOverlay.addText("T02", "|cffffcc00Title|r", "TOPLEFT", 159, -2, 12)
 local tButton = tOverlay.addButton("S02", -101, 264, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -1950,7 +1960,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R03", "|cff402000Rank|r", "TOPLEFT", 30, -52, 11)
+tOverlay.addText("R03", "|cff402000Rank|r", "TOPLEFT", 44, -52, 11)
 tOverlay.addText("T03", "|cffffcc00Title|r", "TOPLEFT", 30, -38, 12)
 local tButton = tOverlay.addButton("S03", -230, 228, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -1960,7 +1970,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R04", "|cff402000Rank|r", "TOPLEFT", 159, -52, 11)
+tOverlay.addText("R04", "|cff402000Rank|r", "TOPLEFT", 172, -52, 11)
 tOverlay.addText("T04", "|cffffcc00Title|r", "TOPLEFT", 159, -38, 12)
 local tButton = tOverlay.addButton("S04", -101, 228, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -1970,7 +1980,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R05", "|cff402000Rank|r", "TOPLEFT", 30, -88, 11)
+tOverlay.addText("R05", "|cff402000Rank|r", "TOPLEFT", 44, -88, 11)
 tOverlay.addText("T05", "|cffffcc00Title|r", "TOPLEFT", 30, -74, 12)
 local tButton = tOverlay.addButton("S05", -230, 192, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -1980,7 +1990,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R06", "|cff402000Rank|r", "TOPLEFT", 159, -88, 11)
+tOverlay.addText("R06", "|cff402000Rank|r", "TOPLEFT", 172, -88, 11)
 tOverlay.addText("T06", "|cffffcc00Title|r", "TOPLEFT", 159, -74, 12)
 local tButton = tOverlay.addButton("S06", -101, 192, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -1990,7 +2000,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R07", "|cff402000Rank|r", "TOPLEFT", 30, -124, 11)
+tOverlay.addText("R07", "|cff402000Rank|r", "TOPLEFT", 44, -124, 11)
 tOverlay.addText("T07", "|cffffcc00Title|r", "TOPLEFT", 30, -110, 12)
 local tButton = tOverlay.addButton("S07", -230, 156, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2000,7 +2010,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R08", "|cff402000Rank|r", "TOPLEFT", 159, -124, 11)
+tOverlay.addText("R08", "|cff402000Rank|r", "TOPLEFT", 172, -124, 11)
 tOverlay.addText("T08", "|cffffcc00Title|r", "TOPLEFT", 159, -110, 12)
 local tButton = tOverlay.addButton("S08", -101, 156, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2010,7 +2020,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R09", "|cff402000Rank|r", "TOPLEFT", 30, -160, 11)
+tOverlay.addText("R09", "|cff402000Rank|r", "TOPLEFT", 44, -160, 11)
 tOverlay.addText("T09", "|cffffcc00Title|r", "TOPLEFT", 30, -146, 12)
 local tButton = tOverlay.addButton("S09", -230, 120, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2020,7 +2030,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R10", "|cff402000Rank|r", "TOPLEFT", 159, -160, 11)
+tOverlay.addText("R10", "|cff402000Rank|r", "TOPLEFT", 172, -160, 11)
 tOverlay.addText("T10", "|cffffcc00Title|r", "TOPLEFT", 159, -146, 12)
 local tButton = tOverlay.addButton("S10", -101, 120, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2030,7 +2040,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R11", "|cff402000Rank|r", "TOPLEFT", 30, -196, 11)
+tOverlay.addText("R11", "|cff402000Rank|r", "TOPLEFT", 44, -196, 11)
 tOverlay.addText("T11", "|cffffcc00Title|r", "TOPLEFT", 30, -182, 12)
 local tButton = tOverlay.addButton("S11", -230, 84, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2040,7 +2050,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R12", "|cff402000Rank|r", "TOPLEFT", 159, -196, 11)
+tOverlay.addText("R12", "|cff402000Rank|r", "TOPLEFT", 172, -196, 11)
 tOverlay.addText("T12", "|cffffcc00Title|r", "TOPLEFT", 159, -182, 12)
 local tButton = tOverlay.addButton("S12", -101, 84, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2050,7 +2060,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R13", "|cff402000Rank|r", "TOPLEFT", 30, -232, 11)
+tOverlay.addText("R13", "|cff402000Rank|r", "TOPLEFT", 44, -232, 11)
 tOverlay.addText("T13", "|cffffcc00Title|r", "TOPLEFT", 30, -218, 12)
 local tButton = tOverlay.addButton("S13", -230, 48, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2060,7 +2070,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R14", "|cff402000Rank|r", "TOPLEFT", 159, -232, 11)
+tOverlay.addText("R14", "|cff402000Rank|r", "TOPLEFT", 172, -232, 11)
 tOverlay.addText("T14", "|cffffcc00Title|r", "TOPLEFT", 159, -218, 12)
 local tButton = tOverlay.addButton("S14", -101, 48, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2070,7 +2080,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R15", "|cff402000Rank|r", "TOPLEFT", 30, -268, 11)
+tOverlay.addText("R15", "|cff402000Rank|r", "TOPLEFT", 44, -268, 11)
 tOverlay.addText("T15", "|cffffcc00Title|r", "TOPLEFT", 30, -254, 12)
 local tButton = tOverlay.addButton("S15", -230, 12, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2080,7 +2090,7 @@ tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
 
-tOverlay.addText("R16", "|cff402000Rank|r", "TOPLEFT", 159, -268, 11)
+tOverlay.addText("R16", "|cff402000Rank|r", "TOPLEFT", 172, -268, 11)
 tOverlay.addText("T16", "|cffffcc00Title|r", "TOPLEFT", 159, -254, 12)
 local tButton = tOverlay.addButton("S16", -101, 12, "inv_misc_questionmark", "Text")
 tButton.doRight = function(pButton)
@@ -2089,6 +2099,23 @@ end
 tButton.doLeft = function(pButton)
 	SendChatMessage("cast " .. pButton.spell, "WHISPER", nil, MultiBot.spellbook.name)
 end
+
+tOverlay.boxButton("C01", -214, 262, 16, true)
+tOverlay.boxButton("C02",  -85, 262, 16, true)
+tOverlay.boxButton("C03", -214, 226, 16, true)
+tOverlay.boxButton("C04",  -85, 226, 16, true)
+tOverlay.boxButton("C05", -214, 190, 16, true)
+tOverlay.boxButton("C06",  -85, 190, 16, true)
+tOverlay.boxButton("C07", -214, 154, 16, true)
+tOverlay.boxButton("C08",  -85, 154, 16, true)
+tOverlay.boxButton("C09", -214, 118, 16, true)
+tOverlay.boxButton("C10",  -85, 118, 16, true)
+tOverlay.boxButton("C11", -214,  82, 16, true)
+tOverlay.boxButton("C12",  -85,  82, 16, true)
+tOverlay.boxButton("C13", -214,  46, 16, true)
+tOverlay.boxButton("C14",  -85,  46, 16, true)
+tOverlay.boxButton("C15", -214,  10, 16, true)
+tOverlay.boxButton("C16",  -85,  10, 16, true)
 
 -- REWARD --
 

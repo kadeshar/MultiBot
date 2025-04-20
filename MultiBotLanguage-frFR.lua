@@ -231,6 +231,9 @@ MultiBot.tips.move.reward =
 MultiBot.tips.move.talent =
 "Faites un clic droit pour déplacer les talents";
 
+MultiBot.tips.move.raidus =
+"Right-Click to drag and move the Raidus";
+
 -- TANKER --
 
 MultiBot.tips.tanker.master = 
@@ -867,6 +870,12 @@ MultiBot.tips.main.rtsc =
 "Cet interrupteur permet d'activer ou de désactiver le contrôle RTSC.|r\n\n"..
 "|cffff0000Clic gauche pour activer ou désactiver le contrôle RTSC|r\n"..
 "|cff999999(Ordre d'exécution : Système)|r";
+
+MultiBot.tips.main.raidus =
+"Raidus-Switch\n|cffffffff"..
+"This Switch will open or close the Raid-Composer.|r\n\n"..
+"|cffff0000Left-Click to open or close the Raid-Composer|r\n"..
+"|cff999999(Execution-Order: System)|r";
 
 MultiBot.tips.main.creator =
 "Switch Créateur\n|cffffffff"..
@@ -1896,15 +1905,21 @@ MultiBot.tips.paladin.naura.rshadow =
 "|cff999999(Ordre d'exécution : Bot)|r";
 
 MultiBot.tips.paladin.naura.baoe =
-"Damage-Aura|cffffffff\n"..
-"It enables the Damage-Aura as Non-Combat-Aura.|r\n\n"..
-"|cffff0000Left-Click to enable Damage-Aura|r\n"..
-"|cff999999(Execution-Order: Bot)|r";
+"Aura de Dégâts|cffffffff\n"..
+"Active l'Aura de Dégâts en tant qu'Aura Hors Combat.|r\n\n"..
+"|cffff0000Clic gauche pour activer l'Aura de Dégâts|r\n"..
+"|cff999999(Ordre d'exécution : Bot)|r";
 
 MultiBot.tips.paladin.naura.barmor =
 "Aura d'Armure|cffffffff\n"..
 "Active l'aura d'armure en tant qu'aura non-combat.|r\n\n"..
 "|cffff0000Clic gauche pour activer l'aura d'armure|r\n"..
+"|cff999999(Ordre d'exécution : Bot)|r";
+
+MultiBot.tips.paladin.naura.bcast =
+"Aura de Concentration|cffffffff\n"..
+"Active l'Aura de Concentration en tant qu'Aura Hors Combat.|r\n\n"..
+"|cffff0000Clic gauche pour activer l'Aura d'Armure|r\n"..
 "|cff999999(Ordre d'exécution : Bot)|r";
 
 MultiBot.tips.paladin.caura.master =
@@ -1940,15 +1955,21 @@ MultiBot.tips.paladin.caura.rshadow =
 "|cff999999(Ordre d'exécution : Bot)|r";
 
 MultiBot.tips.paladin.caura.baoe =
-"Damage-Aura|cffffffff\n"..
-"It enables the Damage-Aura as Combat-Aura.|r\n\n"..
-"|cffff0000Left-Click to enable Damage-Aura|r\n"..
-"|cff999999(Execution-Order: Bot)|r";
+"Aura de Dégâts|cffffffff\n"..
+"Active l'Aura de Dégâts en tant qu'Aura de Combat.|r\n\n"..
+"|cffff0000Clic gauche pour activer l'Aura de Dégâts|r\n"..
+"|cff999999(Ordre d'exécution : Bot)|r";
 
 MultiBot.tips.paladin.caura.barmor =
 "Aura d'Armure|cffffffff\n"..
 "Active l'aura d'armure en tant qu'aura de combat.|r\n\n"..
 "|cffff0000Clic gauche pour activer l'aura d'armure|r\n"..
+"|cff999999(Ordre d'exécution : Bot)|r";
+
+MultiBot.tips.paladin.caura.bcast =
+"Aura de Concentration|cffffffff\n"..
+"Active l'Aura de Concentration en tant qu'Aura de Combat.|r\n\n"..
+"|cffff0000Clic gauche pour activer l'Aura de Concentration|r\n"..
 "|cff999999(Ordre d'exécution : Bot)|r";
 
 MultiBot.tips.paladin.dps.master =
