@@ -19,19 +19,20 @@ MultiBot:SetScript("OnUpdate", function(pSelf, pElapsed)
 	if(MultiBot.auto.invite and MultiBot.timer.invite.elapsed >= MultiBot.timer.invite.interval) then
 		local tTable = MultiBot.index[MultiBot.timer.invite.roster]
 		
-		if(MultiBot.isMember(tTable[MultiBot.timer.invite.index]) == false) then
-			SendChatMessage(MultiBot.doReplace(MultiBot.info.inviting, "NAME", tTable[MultiBot.timer.invite.index]), "SAY")
-			SendChatMessage(".playerbot bot add " .. tTable[MultiBot.timer.invite.index], "SAY")
-			MultiBot.timer.invite.needs = MultiBot.timer.invite.needs - 1
-		end
-		
-		if(MultiBot.timer.invite.needs == 0 or MultiBot.timer.invite.index  == table.getn(tTable)) then
+		if(MultiBot.timer.invite.needs == 0 or MultiBot.timer.invite.index > table.getn(tTable)) then
+			if(MultiBot.timer.invite.roster == "raidus") then MultiBot.raidus.doRaidSort() end
 			MultiBot.timer.invite.elapsed = 0
 			MultiBot.timer.invite.roster = ""
 			MultiBot.timer.invite.index = 1
 			MultiBot.timer.invite.needs = 0
 			MultiBot.auto.invite = false
 			return
+		end
+		
+		if(MultiBot.isMember(tTable[MultiBot.timer.invite.index]) == false) then
+			SendChatMessage(MultiBot.doReplace(MultiBot.info.inviting, "NAME", tTable[MultiBot.timer.invite.index]), "SAY")
+			SendChatMessage(".playerbot bot add " .. tTable[MultiBot.timer.invite.index], "SAY")
+			MultiBot.timer.invite.needs = MultiBot.timer.invite.needs - 1
 		end
 		
 		MultiBot.timer.invite.index = MultiBot.timer.invite.index + 1
@@ -679,11 +680,16 @@ MultiBot:SetScript("OnEvent", function()
 			
 			local tArg = arg1
 			
-			for i = 1, 14, 1 do
+			for i = 1, 20, 1 do
 				tArg = MultiBot.doReplace(tArg, "|cff%w%w%w%w%w%w", "")
 				tArg = MultiBot.doReplace(tArg, "|h", "")
 				tArg = MultiBot.doReplace(tArg, "|r", "")
 			end
+			
+			tArg = MultiBot.doReplace(tArg, "beast bastery", "Beast-Mastery")
+			tArg = MultiBot.doReplace(tArg, "feral combat", "Feral-Combat")
+			tArg = MultiBot.doReplace(tArg, "Blood Elf", "Blood-Elf")
+			tArg = MultiBot.doReplace(tArg, "Night Elf", "Night-Elf")
 			
 			MultiBotGlobalSave[arg2] = tArg
 			return
