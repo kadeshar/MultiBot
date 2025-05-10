@@ -548,9 +548,9 @@ MultiBot.newFrame = function(pParent, pX, pY, pSize, oWidth, oHeight, oAlign)
 		return frame.buttons[pName]
 	end
 	
-	frame.addButton = function(pName, pX, pY, pTexture, pTip)
+	frame.addButton = function(pName, pX, pY, pTexture, pTip, oTemplate)
 		if(frame.buttons[pName] ~= nil) then frame.buttons[pName]:Hide() end
-		frame.buttons[pName] = MultiBot.newButton(frame, pX, pY, frame.size, pTexture, pTip)
+		frame.buttons[pName] = MultiBot.newButton(frame, pX, pY, frame.size, pTexture, pTip, oTemplate)
 		return frame.buttons[pName]
 	end
 	
@@ -675,8 +675,8 @@ end
 
 -- MULTIBOT:BUTTON --
 
-MultiBot.newButton = function(pParent, pX, pY, pSize, pTexture, pTip)
-	local button = CreateFrame("Button", nil, pParent, "ActionButtonTemplate")
+MultiBot.newButton = function(pParent, pX, pY, pSize, pTexture, pTip, oTemplate)
+	local button = CreateFrame("Button", nil, pParent, MultiBot.IF(oTemplate ~= nil, oTemplate, "ActionButtonTemplate"))
 	button:SetPoint("BOTTOMRIGHT", pX, pY)
 	button:SetSize(pSize, pSize)
 	button:Show()
@@ -849,6 +849,7 @@ MultiBot.wowButton = function(pParent, pName, pX, pY, pWidth, pHeight, pSize)
 	button:RegisterForClicks("LeftButtonDown", "RightButtonDown")
 	
 	button.parent = pParent
+	button.state = true
 	button.y = pY
 	button.x = pX
 	
@@ -872,6 +873,20 @@ MultiBot.wowButton = function(pParent, pName, pX, pY, pWidth, pHeight, pSize)
 	
 	button.get = function()
 		return button.parent.get()
+	end
+	
+	-- SET --
+	
+	button.setDisable = function()
+		button:GetNormalTexture():SetDesaturated(1)
+		button.state = false
+		return button
+	end
+	
+	button.setEnable = function()
+		button:GetNormalTexture():SetDesaturated(nil)
+		button.state = true
+		return button
 	end
 	
 	-- DO --
