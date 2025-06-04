@@ -548,8 +548,23 @@ tButton.doLeft = function(pButton, oRoster, oFilter)
 	end
 end
 
-local tUnits = tMultiBar.addFrame("Units", -40, 38)
+local tUnits = tMultiBar.addFrame("Units", -40, 72)
 tUnits:Hide()
+
+-- UNITS:ALLIANCE --
+
+local tAlliance = tUnits.addFrame("Alliance", 0, -34, 32)
+tAlliance:Show()
+
+local tButton = tAlliance.addButton("Alliance", 0, 0, "inv_misc_tournaments_banner_human", MultiBot.tips.units.alliance).doShow()
+tButton.doRight = function(pButton)
+	SendChatMessage(".playerbot bot remove *", "SAY");
+end
+tButton.doLeft = function(pButton)
+	SendChatMessage(".playerbot bot add *", "SAY");
+end
+
+-- UNITS:CONTROL --
 
 local tControl = tUnits.addFrame("Control", -2, 0)
 tControl:Show()
@@ -815,19 +830,6 @@ tControl.addButton("Browse", 0, 90, "Interface\\AddOns\\MultiBot\\Icons\\browse.
 	tMaster.to = tTo
 	
 	tUnits.frames["Control"].setPoint(-2, (tUnits.size + 2) * tIndex)
-end
-
--- UNITS:ALL --
-
-local tAlliance = tUnits.addFrame("Alliance", -2, -68)
-tAlliance:Show()
-
-local tButton = tAlliance.addButton("Alliance", 0, 0, "inv_misc_tournaments_banner_human", MultiBot.tips.units.alliance).doShow()
-tButton.doRight = function(pButton)
-	SendChatMessage(".playerbot bot remove *", "SAY");
-end
-tButton.doLeft = function(pButton)
-	SendChatMessage(".playerbot bot add *", "SAY");
 end
 
 -- MAIN --
@@ -1186,7 +1188,8 @@ local tButton = tRight.addButton("Quests", 0, 0, "inv_misc_book_07", MultiBot.ti
 tButton.doRight = function(pButton)
 	local tEntries, tQuests = GetNumQuestLogEntries()
 	local tFrame = pButton.parent.frames["Quests"]
-	local tIndex = 1
+	local tIndex = 0
+	local tShow = 1
 	
 	for key, value in pairs(tFrame.buttons) do value:Hide() end
 	for key, value in pairs(tFrame.texts) do value:Hide() end
@@ -1237,7 +1240,7 @@ tButton.doRight = function(pButton)
 			tFrame.limit = tFrame.limit + 1
 			
 			local tAmount = 0
-			local tButton = tFrame.addButton("Quest" .. tFrame.limit, 0, (tIndex - 1) * 30, "inv_misc_note_01", tLink)
+			local tButton = tFrame.addButton("Quest" .. tFrame.limit, 0, tIndex * 30, "inv_misc_note_01", tLink)
 			tButton.link = tLink
 			tButton.id = i
 			
@@ -1268,16 +1271,17 @@ tButton.doRight = function(pButton)
 				end
 			end
 			
-			local tText = tFrame.addText("Title" .. tFrame.limit, "[" .. tAmount .. "] " .. tTitle, "BOTTOMLEFT", 30, (tIndex - 1) * 30 + 14, 12)
+			local tText = tFrame.addText("Title" .. tFrame.limit, "[" .. tAmount .. "] " .. tTitle, "BOTTOMLEFT", 30, tIndex * 30 + 14, 12)
 			
-			if(tIndex < tFrame.from or tIndex > tFrame.to) then
-				tButton:Hide()
-				tText:Hide()
-			else
+			if(tShow >= tFrame.from and tShow <= tFrame.to) then
 				tButton:Show()
 				tText:Show()
+			else
+				tButton:Hide()
+				tText:Hide()
 			end
 			
+			tShow = tShow + 1
 			tIndex = (tIndex + 1)%10
 		end
 	end
@@ -1291,10 +1295,10 @@ tButton.doLeft = function(pButton)
 	if(MultiBot.ShowHideSwitch(pButton.parent.frames["Quests"])) then pButton.doRight(pButton) end
 end
 
-local tQuests = tRight.addFrame("Quests", -2, 34)
+local tQuests = tRight.addFrame("Quests", -2, 64)
 tQuests:Hide()
 
-local tAccpet = tQuests.addFrame("Accept", 0, -64, 28)
+local tAccpet = tQuests.addFrame("Accept", 0, -30, 28)
 tAccpet:Show()
 
 tAccpet.addButton("Accept", 0, 0, "inv_misc_note_02", MultiBot.tips.quests.accept)
