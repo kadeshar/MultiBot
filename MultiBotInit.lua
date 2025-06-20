@@ -1939,7 +1939,7 @@ tOverlay.wowButton("<", -159, 309, 15, 18, 13)
 	local tIndex = 1
 	
 	for i = MultiBot.spellbook.from, MultiBot.spellbook.to do
-		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i], MultiBot.spells[pButton.getName()][MultiBot.spellbook.spells[i][1]])
+		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i], pButton.getName())
 		tIndex = tIndex + 1
 	end
 end
@@ -1956,7 +1956,7 @@ tOverlay.wowButton(">", -59, 309, 15, 18, 11)
 	local tIndex = 1
 	
 	for i = MultiBot.spellbook.from, MultiBot.spellbook.to do
-		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i], MultiBot.spells[pButton.getName()][MultiBot.spellbook.spells[i][1]])
+		MultiBot.setSpell(tIndex, MultiBot.spellbook.spells[i], pButton.getName())
 		tIndex = tIndex + 1
 	end
 end
@@ -2766,18 +2766,18 @@ MultiBot.talent.doState = function()
 			
 			if(MultiBot.talent.points == 0) then
 				if(tTalent.value == 0) then
-					tTalent.setDisable()
+					tTalent.setDisable(false)
 					tValue:Hide()
 				else
-					tTalent.setEnable()
+					tTalent.setEnable(false)
 					tValue:Show()
 				end
 			else
 				if(tTab.value < tTalent.points) then
-					tTalent.setDisable()
+					tTalent.setDisable(false)
 					tValue:Hide()
 				else
-					tTalent.setEnable()
+					tTalent.setEnable(false)
 					tValue:Show()
 				end
 			end
