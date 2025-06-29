@@ -14,6 +14,7 @@ MultiBot.raidus.addFrame("Group4", -185, 604, 28, 160, 240)
 MultiBot.raidus.addFrame("Group3", -350, 604, 28, 160, 240)
 MultiBot.raidus.addFrame("Group2", -515, 604, 28, 160, 240)
 MultiBot.raidus.addFrame("Group1", -680, 604, 28, 160, 240)
+MultiBot.raidus.addText("RaidScore", "RaidScore: 0", "BOTTOMLEFT", 376, 364, 12)
 MultiBot.raidus.save = ""
 MultiBot.raidus.from = 1
 MultiBot.raidus.to = 11
@@ -29,7 +30,13 @@ end
 MultiBot.raidus.wowButton("Load", -762, 360, 80, 20, 12)
 .doLeft = function(pButton)
 	local tPool = MultiBot.raidus.frames["Pool"]
-	local tLoad = MultiBot.doSplit(MultiBotSave["Raidus" .. MultiBot.raidus.save], ";")
+	local tData = MultiBotSave["Raidus" .. MultiBot.raidus.save]
+	
+	if(tData == nil or tData == "") then
+		SendChatMessage(MultiBot.info.nothing, "SAY");
+	end
+	
+	local tLoad = MultiBot.doSplit(tData, ";")
 	
 	for i = 1, 8, 1 do
 		local tGroup = MultiBot.doSplit(tLoad[i], ",")
@@ -127,8 +134,6 @@ MultiBot.raidus.wowButton("Save", -597, 360, 80, 20, 12)
 	MultiBotSave["Raidus" .. MultiBot.raidus.save] = tSave
 	SendChatMessage("I wrote it down.", "SAY")
 end
-
-
 
 MultiBot.raidus.wowButton("Apply", -514, 360, 80, 20, 12)
 .doLeft = function(pButton)
@@ -243,12 +248,12 @@ MultiBot.raidus.setRaidus = function()
 		tBot.special = tDetails[3]
 		tBot.talents = tDetails[4]
 		tBot.class = tDetails[5]
-		tBot.level = tonumber(tDetails[6])
-		tBot.score = tonumber(tDetails[7])
+		tBot.level = tonumber(tDetails[6]) or 0
+		tBot.score = tonumber(tDetails[7]) or 0
 		
 		local tClass = MultiBot.toClass(tBot.class)
 		
-		tBot.sort = tonumber(tBot.level) * 1000
+		tBot.sort = tBot.level * 1000
 		+ MultiBot.IF(tClass == "DeathKnight", 1100000
 		, MultiBot.IF(tClass == "Druid", 1200000
 		, MultiBot.IF(tClass == "Hunter", 1300000
@@ -259,7 +264,7 @@ MultiBot.raidus.setRaidus = function()
 		, MultiBot.IF(tClass == "Shaman", 1800000
 		, MultiBot.IF(tClass == "Warlock", 1900000
 		, MultiBot.IF(tClass == "Warrior", 2000000
-		, 1000000)))))))))) + tonumber(tBot.score);
+		, 1000000)))))))))) + tBot.score;
 		
 		tBots[tIndex] = tBot
 		tIndex = tIndex + 1
@@ -362,8 +367,9 @@ MultiBot.raidus.setRaidus = function()
 		local tGroup = MultiBot.raidus.frames["Group" .. i]
 		local tY = 182
 		
-		tGroup.addText("Title", "- Group" .. i .. " -", "BOTTOM", 0, 223, 12)
+		tGroup.addText("Title", "- Group" .. i .. " : 0 -", "BOTTOM", 0, 223, 12)
 		tGroup.group = "Group" .. i
+		tGroup.score = 0
 		
 		for j = 1, 5, 1 do
 			local tFrame = tGroup.addFrame("Slot" .. j, 0, tY, 28, 160, 36)
@@ -464,6 +470,37 @@ MultiBot.raidus.doRaidSort = function(pIndex)
 	return pIndex + 1
 end
 
+MultiBot.raidus.doGroupScore = function(pGroup)
+	if(pGroup == nil or pGroup.group == nil) then return end
+	local tScore = 0
+	local tSize = 0
+	
+	for tKey, tSlot in pairs(pGroup.frames) do
+		if(tSlot ~= nil and tSlot.bot ~= nil) then
+			tScore = tScore + tSlot.bot.score
+			tSize = tSize + 1
+		end
+	end
+	
+	pGroup.score = MultiBot.IF(tSize > 0, math.floor(tScore / tSize), 0)
+	pGroup.setText("Title", "- " .. pGroup.group .. " : " .. pGroup.score .. " -")
+end
+
+MultiBot.raidus.doRaidScore = function()
+	local tScore = 0
+	local tSize = 0
+	
+	for tKey, tGroup in pairs(MultiBot.raidus.frames) do
+		if(tGroup ~= nil and tGroup.score ~= nil and tGroup.score > 0) then
+			tScore = tScore + tGroup.score
+			tSize = tSize + 1
+		end
+	end
+	
+	tScore = MultiBot.IF(tSize > 0, math.floor(tScore / tSize), 0)
+	MultiBot.raidus.setText("RaidScore", "RaidScore: " .. tScore)
+end
+
 MultiBot.raidus.doDrop = function(pObject, pParent, pX, pY, pWidth, pHeight, pSlot)
 	pParent.frames[pSlot] = pObject
 	pObject:ClearAllPoints()
@@ -476,4 +513,6 @@ MultiBot.raidus.doDrop = function(pObject, pParent, pX, pY, pWidth, pHeight, pSl
 	pObject.slot = pSlot
 	pObject.x = pX
 	pObject.y = pY
+	MultiBot.raidus.doGroupScore(pParent)
+	MultiBot.raidus.doRaidScore()
 end

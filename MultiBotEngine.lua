@@ -121,6 +121,7 @@ MultiBot.isActive = function(pName)
 end
 
 MultiBot.isInside = function(pString, p1stPattern, o2ndPattern, o3rdPattern, o4thPattern, o5thPattern, o6thPattern, o7thPattern, o8thPattern, o9thPattern)
+	if(pString == nil) then return false end
 	if(p1stPattern ~= nil and string.find(pString, p1stPattern)) then return true end
 	if(o2ndPattern ~= nil and string.find(pString, o2ndPattern)) then return true end
 	if(o3rdPattern ~= nil and string.find(pString, o3rdPattern)) then return true end
@@ -134,6 +135,7 @@ MultiBot.isInside = function(pString, p1stPattern, o2ndPattern, o3rdPattern, o4t
 end
 
 MultiBot.beInside = function(pString, p1stPattern, o2ndPattern, o3rdPattern, o4thPattern, o5thPattern, o6thPattern, o7thPattern, o8thPattern, o9thPattern)
+	if(pString == nil) then return false end
 	if(p1stPattern ~= nil and nil == string.find(pString, p1stPattern)) then return false end
 	if(o2ndPattern ~= nil and nil == string.find(pString, o2ndPattern)) then return false end
 	if(o3rdPattern ~= nil and nil == string.find(pString, o3rdPattern)) then return false end
@@ -193,17 +195,19 @@ MultiBot.isUnit = function(pUnit)
 end
 
 MultiBot.toClass = function(pClass)
-	-- Chinese Support for Classes --
-	if(pClass == "死亡骑士") then return "DeathKnight" end
-	if(pClass == "德鲁伊") then return "Druid" end
-	if(pClass == "猎人") then return "Hunter" end
-	if(pClass == "法师") then return "Mage" end
-	if(pClass == "圣骑士") then return "Paladin" end
-	if(pClass == "牧师") then return "Priest" end
-	if(pClass == "潜行者") then return "Rogue" end
-	if(pClass == "萨满祭司") then return "Shaman" end
-	if(pClass == "术士") then return "Warlock" end
-	if(pClass == "战士") then return "Warrior" end
+	local pLower = string.lower(pClass)
+	local pStart = string.sub(pLower, 1, 5)
+	
+	for i = 1, 10 do
+		local tOutput = MultiBot.data.classes.output[i]
+		local tInput = MultiBot.data.classes.input[i]
+		local tLower = string.lower(tInput)
+		local tStart = string.sub(tLower, 1, 5)
+		
+		if(pClass == tInput) then return tOutput end
+		if(pLower == tLower) then return tOutput end
+		if(pStart == tStart) then return tOutput end
+	end
 	
 	local tClass = string.lower(string.sub(pClass, 1, 1) .. string.sub(pClass, 4, 4))
 	if(tClass == "te" or tClass == "dt") then return "DeathKnight" end
@@ -272,12 +276,13 @@ MultiBot.RaidPool = function(pUnit, oWho)
 	local tLocalRace, tRace = UnitRace(pUnit)
 	local tLevel = UnitLevel(pUnit)
 	local tName = UnitName(pUnit)
+	local tIndex = { 4, 5, 6 }
 	local tTabs = {}
 	local tScore = ""
 	
 	if(oWho ~= nil) then
 		local tWho = MultiBot.CLEAR(oWho, 20)
-		tWho = MultiBot.doReplace(tWho, "beast bastery", "Beast-Mastery")
+		tWho = MultiBot.doReplace(tWho, "beast mastery", "Beast-Mastery")
 		tWho = MultiBot.doReplace(tWho, "feral combat", "Feral-Combat")
 		tWho = MultiBot.doReplace(tWho, "Blood Elf", "Blood-Elf")
 		tWho = MultiBot.doReplace(tWho, "Night Elf", "Night-Elf")
@@ -285,13 +290,19 @@ MultiBot.RaidPool = function(pUnit, oWho)
 		tParts = MultiBot.doSplit(tWho, ", ")
 		tSpace = MultiBot.doSplit(tParts[1], " ")
 		tScore = MultiBot.doSplit(tParts[2], " ")[1]
-		tTabs = MultiBot.doSplit(strsub(tSpace[4], 2, strlen(tSpace[4]) - 1), "/")
+		
+		if(MultiBot.isInside(tSpace[5], "/")) then tIndex = { 5, 6, 7 } else
+		if(MultiBot.isInside(tSpace[6], "/")) then tIndex = { 6, 7, 8 } else
+		if(MultiBot.isInside(tSpace[7], "/")) then tIndex = { 7, 8, 9 }
+		end end end
+		
+		tTabs = MultiBot.doSplit(strsub(tSpace[tIndex[1]], 2, strlen(tSpace[tIndex[1]]) - 1), "/")
 		
 		if(tGender == nil) then tGender = tSpace[2] end
-		if(tClass == nil) then tClass = MultiBot.toClass(tSpace[5]) end
+		if(tClass == nil) then tClass = MultiBot.toClass(tSpace[tIndex[2]]) end
 		if(tRace == nil) then tRace = tSpace[1] end
 		if(tName == nil) then tName = pUnit end
-		if(tLevel == nil) then tLevel = substr(MultiBot.doSplit(tSpace[6], " ")[1], 2) end
+		if(tLevel == nil) then tLevel = substr(MultiBot.doSplit(tSpace[tIndex[3]], " ")[1], 2) end
 	else
 		tScore = MultiBot.ItemLevel(pUnit)
 		tTabs[1] = GetNumTalents(1)
@@ -538,8 +549,8 @@ MultiBot.newFrame = function(pParent, pX, pY, pSize, oWidth, oHeight, oAlign)
 	frame.addModel = function(pName, pX, pY, pWidth, pHeight, oScale)
 		if(frame.model ~= nil) then frame.model:Hide() end
 		frame.model = CreateFrame("DressUpModel", "MyModel" .. pName, frame)
-		frame.model:SetPoint("CENTER", 0, 64)
-		frame.model:SetSize(160, 240)
+		frame.model:SetPoint("CENTER", pX, pY)
+		frame.model:SetSize(pWidth, pHeight)
 		frame.model:SetUnit(pName)
 		if(oScale ~= nil) then frame.model:SetScale(oScale) end
 		return frame.model
