@@ -364,7 +364,10 @@ MultiBot:SetScript("OnEvent", function()
           end
         end
 
+		
 		if(MultiBot.isInside(arg1, "Possible strategies")) then
+		-- if(MultiBot.auto.strategyAsk and MultiBot.isInside(arg1, "Possible strategies")) then -- Changed because chat spam
+			-- arg1 = string.gsub(arg1, "^[Pp]ossible strategies:%s*", "")
 			local tStrategies = MultiBot.doSplit(arg1, ", ")
 			SendChatMessage("=== STRATEGIES ===", "SAY")
 			for i = 1, table.getn(tStrategies) do SendChatMessage(i .. " : " .. tStrategies[i], "SAY") end
@@ -391,26 +394,26 @@ MultiBot:SetScript("OnEvent", function()
 		end
 		
 		if(string.sub(arg1, 1, 12) == "Bot roster: ") then
-        -- ------------------------------------------------------------
-        -- SECURITY : wait to MultiBar construction
-        -- ------------------------------------------------------------
-        if not (MultiBot.frames and MultiBot.frames["MultiBar"]
-                and MultiBot.frames["MultiBar"].frames
-                and MultiBot.frames["MultiBar"].frames["Units"]) then
-            -- we retry 0,1 s later
-            local df = CreateFrame("Frame")
-            df.t = 0
-            df:SetScript("OnUpdate", function(self, elapsed)
-                self.t = self.t + elapsed
-                if self.t > 0.1 then
-                    self:SetScript("OnUpdate", nil)
-                    if MultiBot.handler and MultiBot.handler["CHAT_MSG_SYSTEM"] then
-                        MultiBot.handler["CHAT_MSG_SYSTEM"](arg1)
+            -- ------------------------------------------------------------
+            -- SECURITY : wait to MultiBar construction
+            -- ------------------------------------------------------------
+            if not (MultiBot.frames and MultiBot.frames["MultiBar"]
+                    and MultiBot.frames["MultiBar"].frames
+                    and MultiBot.frames["MultiBar"].frames["Units"]) then
+                -- we retry 0,1 s later
+                local df = CreateFrame("Frame")
+                df.t = 0
+                df:SetScript("OnUpdate", function(self, elapsed)
+                    self.t = self.t + elapsed
+                    if self.t > 0.1 then
+                        self:SetScript("OnUpdate", nil)
+                        if MultiBot.handler and MultiBot.handler["CHAT_MSG_SYSTEM"] then
+                            MultiBot.handler["CHAT_MSG_SYSTEM"](arg1)
+                        end
                     end
-                end
-            end)
-            return
-        end
+                end)
+                return
+            end
 		
 			local tLocClass, tClass, tLocRace, tRace, tSex, tName = GetPlayerInfoByGUID(UnitGUID("player"))
 			tClass = MultiBot.toClass(tClass)
@@ -546,6 +549,10 @@ MultiBot:SetScript("OnEvent", function()
 				tButton.waitFor = "CO"
 				SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", tName), "SAY")
 				SendChatMessage("co ?", "WHISPER", nil, tName)
+				--[[if MultiBot.auto.strategyAsk then -- a remplacer pour utiliser la variable
+					SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", tName), "SAY")
+					SendChatMessage("co ?", "WHISPER", nil, tName)
+				end]]--				
 				tButton.setEnable()
 				--MultiBot.doRaid()
 				return
@@ -583,6 +590,11 @@ MultiBot:SetScript("OnEvent", function()
 			SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", tName), "SAY")
 			SendChatMessage("co ?", "WHISPER", nil, tName)
 			tButton.setEnable()
+			--[[if MultiBot.auto.strategyAsk then
+				SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", tName), "SAY")
+				SendChatMessage("co ?", "WHISPER", nil, tName)
+			end
+			tButton.setEnable()]]--	A remplacer pour utiliser le lock
 			--MultiBot.doRaid()
 			return
 		end
@@ -1026,6 +1038,10 @@ MultiBot:SetScript("OnEvent", function()
 			tButton.waitFor = "CO"
 			SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", arg2), "SAY")
 			SendChatMessage("co ?", "WHISPER", nil, arg2)
+			--[[if MultiBot.auto.strategyAsk then
+				SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", arg2), "SAY")
+				SendChatMessage("co ?", "WHISPER", nil, arg2)
+			end]]-- A utiliser pour utiliser le lock		
 			--MultiBot.doRaid()
 			return
 		end
@@ -1090,6 +1106,9 @@ MultiBot:SetScript("OnEvent", function()
 			
 			tButton.setEnable()
 			SendChatMessage("ss ?", "WHISPER", nil, arg2)
+			--[[if MultiBot.auto.strategyAsk then
+				SendChatMessage("ss ?", "WHISPER", nil, arg2)
+			end]]--	A utiliser pour utiliser le lock	
 			return
 		end
 		
@@ -1098,6 +1117,10 @@ MultiBot:SetScript("OnEvent", function()
 			tButton.combat = string.sub(arg1, 13)
 			SendChatMessage(MultiBot.doReplace(MultiBot.info.normal, "NAME", arg2), "SAY")
 			SendChatMessage("nc ?", "WHISPER", nil, arg2)
+			--[[if MultiBot.auto.strategyAsk then
+				SendChatMessage(MultiBot.doReplace(MultiBot.info.normal, "NAME", arg2), "SAY")
+				SendChatMessage("nc ?", "WHISPER", nil, arg2)
+			end]]-- A utiliser pour utiliser le lock		
 			return
 		end
 		
