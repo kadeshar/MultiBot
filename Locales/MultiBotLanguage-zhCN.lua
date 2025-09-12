@@ -862,6 +862,12 @@ MultiBot.tips.units.friends =
 "|cffff0000左键单击选择好友团队|r\n"..
 "|cff999999(执行命令: 系统)|r";
 
+MultiBot.tips.units.favorites =
+"名册筛选\n|cffffffff"..
+"仅显示你标记为收藏的机器人。|r\n\n"..
+"|cffff0000左键点击以激活|r\n"..
+"|cff999999(执行者: 系统)|r";
+
 -- 团队：浏览 --
 
 MultiBot.tips.units.browse =
@@ -2895,7 +2901,7 @@ MultiBot.tips.warrior.tank =
 "|cf9999999(执行命令: 机器人)|r";
 
 
--- 所有的 --
+-- EVERY --
 
 MultiBot.tips.every.misc =
 "杂项|cffffffff\n"..
@@ -2904,12 +2910,21 @@ MultiBot.tips.every.misc =
 "|cffff0000左键单击切换此菜单|r\n"..
 "|cff999999(执行顺序：系统)|r"
 
+MultiBot.tips.every.favorite =
+"收藏|cffffffff\n"..
+"将此机器人添加到收藏或从收藏中移除（按角色保存）。|r\n\n"..
+"|cffff0000左键点击以切换|r\n"..
+"|cff999999(执行者: 系统)|r";
+
 MultiBot.tips.every.autogear =
 "自动装备|cffffffff\n"..
 "根据你的AutoGear设置（品质 / 装备评分）\n"..
 "自动为该机器人装备物品。|r\n\n"..
 "|cffff0000左键点击启动自动装备|r\n"..
 "|cff999999（执行顺序：机器人）|r";
+
+MultiBot.tips.every.autogearpopup =
+"在 %s 上启动自动装备？";
 
 MultiBot.tips.every.maintenance =
 "维护|cffffffff\n"..
