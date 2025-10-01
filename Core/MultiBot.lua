@@ -17,13 +17,24 @@ end
 -- UI helper: promote a frame to the foreground without breaking tooltips
 function MultiBot.PromoteFrame(f, strata)
   if not f or not f.SetFrameStrata then return end
-  f:SetFrameStrata(strata or "DIALOG")
+  -- Add a default fallback kept at "DIALOG" to avoid regressions and it's safer
+  local level = strata or (MultiBotGlobalSave and MultiBotGlobalSave["Strata.Level"]) or "HIGH"
+  f:SetFrameStrata(level)
   if f.SetToplevel then f:SetToplevel(true) end
   if f.HookScript then
     f:HookScript("OnShow", function(self) if self.Raise then self:Raise() end end)
   end
 end
 
+function MultiBot.ApplyGlobalStrata()
+  local level = (MultiBotGlobalSave and MultiBotGlobalSave["Strata.Level"]) or nil
+  if not MultiBot.frames then return end
+  for name, frm in pairs(MultiBot.frames) do
+    if type(frm) == "table" and frm.SetFrameStrata then
+      MultiBot.PromoteFrame(frm, level)
+    end
+  end
+end
 
 -- Account level detection (multi-locale, no hardcoding in handler) --
 -- Set your GM threshold here (>= value means GM). ONLY set it once.
@@ -188,6 +199,7 @@ MultiBot.frames = {}
 MultiBot.units = {}
 MultiBot.tips = {}
 MultiBot.tips.spec = MultiBot.tips.spec or {}
+MultiBotSave.Minimap = MultiBotSave.Minimap or {}
 
 MultiBot.auto = {}
 MultiBot.auto.sort = false
@@ -478,6 +490,32 @@ end
 
 MultiBot.info = {}
 MultiBot.info.shorts = {}
+
+-- ITEMS
+MultiBot.info.itemdestroyalert = 
+"Do you REALLY want to destroy this item?\n%s";
+
+MultiBot.info.keydestroyalert = 
+"I will not sell Keys.";
+
+MultiBot.info.itemsellalert = 
+"I cant sell this Item.";
+
+-- MINIMAP BUTTON
+MultiBot.info.butttitle = 
+"|cffffd100MultiBot|r"
+
+MultiBot.info.buttontoggle =
+"|cff00ff00Left-click: toggle UI|r";
+
+MultiBot.info.buttonoptions =
+"|cffff0000Right-click: options|r";
+
+MultiBot.info.buttonoptionshide =
+"Hide minimap button";
+
+MultiBot.info.buttonoptionshidetooltip =
+"Hide or show the MultiBot minimap button.\n(Left-click: toggle UI, Right-click: open options)";
 
 -- GLYPHS
 MultiBot.info.glyphssocketnotunlocked =
@@ -3119,55 +3157,72 @@ MultiBot.tips.shaman.totemsmove =
 "Right-Click to drag and move the TotemBar";
 
 MultiBot.tips.shaman.ctotem.stoe =
-"Strength of Earth";
+"Strength of Earth\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.stoskin =
-"Stoneskin";
+"stoneskin\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.tremor =
-"Tremor";
+"Tremor\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.eabind =
-"Earthbind";
+"Earthbind\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.searing =
-"Searing";
+"Searing\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.magma =      
-"Magma";
+"Magma\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.fltong =  
-"Flametongue";
+"Flametongue\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.towrath = 
-"Totem of Wrath";
+"Totem of Wrath\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.frostres = 
-"Frost Resistance";
+"Frost Resistance\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.healstream = 
-"Healing Stream";
+"Healing Stream\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.manasprin = 
-"Mana Spring";
+"Mana Spring\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.cleansing =
-"Cleansing";
+"Cleansing\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.fireres =
-"Fire Resistance";
+"Fire Resistance\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.wrhatair =
-"Wrath of Air";
+"Wrath of Air\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.windfury =
-"Windfury";
+"Windfury\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.natres =
-"Nature Resistance";
+"Nature Resistance\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.grounding =
-"Grounding";
+"Grounding\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.earthtot =
 "Earth Totems";

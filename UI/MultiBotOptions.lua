@@ -87,7 +87,15 @@ function MultiBot.BuildOptionsPanel()
   panel.name = "MultiBot"
   panel:Hide()
 
-  panel:SetScript("OnShow", function(self)
+  local scrollFrame = CreateFrame("ScrollFrame", PANEL_NAME.."ScrollFrame", panel, "UIPanelScrollFrameTemplate")
+  scrollFrame:SetPoint("TOPLEFT", 3, -4)
+  scrollFrame:SetPoint("BOTTOMRIGHT", -27, 4)
+
+  local scrollChild = CreateFrame("Frame", PANEL_NAME.."ScrollChild", scrollFrame)
+  scrollChild:SetSize(1, 1)
+  scrollFrame:SetScrollChild(scrollChild)
+
+  scrollChild:SetScript("OnShow", function(self)
     if self._initialized then return end
     self._initialized = true
 
@@ -95,8 +103,88 @@ function MultiBot.BuildOptionsPanel()
     title:SetPoint("TOPLEFT", 16, -16)
     title:SetText(MultiBot.tips.sliders.frametitle)
 
+    -- SV minimap garanties côté options
+    MultiBotSave = MultiBotSave or {}
+    MultiBotSave.Minimap = MultiBotSave.Minimap or {}
+
+    local strataDropDown = CreateFrame("Frame", "MultiBotStrataDropDown", self, "UIDropDownMenuTemplate")
+    --strataDropDown:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -14, -30)
+
+    --------------------------------------------------------------------
+    -- Minimap: Hide button
+    --------------------------------------------------------------------
+    local chkMinimapHide = CreateFrame("CheckButton", "MultiBot_MinimapHideCheck",
+      self, "InterfaceOptionsCheckButtonTemplate")
+    chkMinimapHide:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -10)
+    _G[chkMinimapHide:GetName().."Text"]:SetText(MultiBot.info.buttonoptionshide)
+    chkMinimapHide.tooltipText = MultiBot.info.buttonoptionshidetooltip
+  
+    -- État initial
+    chkMinimapHide:SetChecked(MultiBotSave.Minimap.hide and true or false)
+  
+    chkMinimapHide:SetScript("OnClick", function(self)
+      local hide = self:GetChecked() and true or false
+	  MultiBotSave.Minimap = MultiBotSave.Minimap or {}
+      MultiBotSave.Minimap.hide = hide
+      if MultiBot.Minimap_Refresh then
+        MultiBot.Minimap_Refresh()
+      else
+        -- Back-up très défensif si la fonction n'existe pas encore
+        local b = _G["MultiBot_MinimapButton"] or MultiBot.MinimapButton
+        if b then
+          if hide then b:Hide() else b:Show() end
+        end
+      end
+    end)
+	
+    -- Replacer le dropdown de Strata SOUS la checkbox
+    strataDropDown:ClearAllPoints()
+    strataDropDown:SetPoint("TOPLEFT", chkMinimapHide, "BOTTOMLEFT", -14, -18)
+
+    local strataLabel = self:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    strataLabel:SetPoint("BOTTOMLEFT", strataDropDown, "TOPLEFT", 16, 3)
+    strataLabel:SetText("Frame Strata")
+  
+    -- Petite aide visuelle sous la case
+    -- local hint = panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+	local hint = self:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+    hint:SetPoint("TOPLEFT", chkMinimapHide, "BOTTOMLEFT", 28, -4)
+    --hint:SetText("Tip: drag the button around the minimap to reposition it.")
+  
+    -- Conserver la référence
+    panel.chkMinimapHide = chkMinimapHide
+  
+
+    local current = (MultiBotGlobalSave and MultiBotGlobalSave["Strata.Level"]) or "HIGH"
+    local strataLevels = { "BACKGROUND", "LOW", "MEDIUM", "HIGH", "DIALOG", "TOOLTIP" }
+
+    local function OnClick(button)
+        UIDropDownMenu_SetSelectedID(strataDropDown, button:GetID())
+        MultiBotGlobalSave["Strata.Level"] = strataLevels[button:GetID()]
+        if MultiBot.ApplyGlobalStrata then
+          MultiBot.ApplyGlobalStrata()
+        end
+    end
+
+    local function Initialize(self, level)
+        local info
+        for k, v in ipairs(strataLevels) do
+            info = UIDropDownMenu_CreateInfo()
+            info.text = v
+            info.value = v
+            info.func = OnClick
+            UIDropDownMenu_AddButton(info, level)
+        end
+    end
+
+    UIDropDownMenu_Initialize(strataDropDown, Initialize)
+    UIDropDownMenu_SetWidth(strataDropDown, 120)
+    UIDropDownMenu_SetButtonWidth(strataDropDown, 144)
+    UIDropDownMenu_SetSelectedValue(strataDropDown, current)
+    UIDropDownMenu_JustifyText(strataDropDown, "LEFT")
+
     local sub = self:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-    sub:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -6)
+    sub:SetPoint("TOPLEFT", strataDropDown, "BOTTOMLEFT", 20, -12)
     sub:SetText(MultiBot.tips.sliders.actionsinter)
 
     -- Sliders : on les crée puis on les ANCRE sous le sous-titre pour éviter tout chevauchement

@@ -148,6 +148,23 @@ MultiBot:SetScript("OnEvent", function()
             MultiBot.frames["MultiBar"].setPoint(tonumber(tPoint[1]), tonumber(tPoint[2]))
         end	
 		
+        -- Restore MultiBot Bar state visible by default if key missing
+        local function affect(frmKey, frm)
+          return frmKey ~= "ShamanQuick" and frmKey ~= "HunterQuick"
+        end
+        if MultiBotSave["UIVisible"] == false then
+          for key, value in pairs(MultiBot.frames) do
+            if affect(key, value) then value:Hide() end
+          end
+          MultiBot.state = false
+        else
+          -- nil or true => we display main frame
+          for key, value in pairs(MultiBot.frames) do
+            if affect(key, value) then value:Show() end
+          end
+          MultiBot.state = true
+        end
+
 		if(MultiBotSave["InventoryPoint"] ~= nil) then
 			local tPoint = MultiBot.doSplit(MultiBotSave["InventoryPoint"], ", ")
 			MultiBot.inventory.setPoint(tonumber(tPoint[1]), tonumber(tPoint[2]))
@@ -335,7 +352,18 @@ MultiBot:SetScript("OnEvent", function()
 				tButton.doLeft(tButton)
 			end
 		end
-		
+
+        if MultiBotGlobalSave and MultiBotGlobalSave["Strata.Level"] ~= nil then
+          if MultiBot.ApplyGlobalStrata then
+            MultiBot.ApplyGlobalStrata()
+          else
+            -- minimal fallback if the function does not exist
+            if MultiBot.frames and MultiBot.frames["MultiBar"] then
+              MultiBot.PromoteFrame(MultiBot.frames["MultiBar"], MultiBotGlobalSave["Strata.Level"])
+            end
+          end
+        end
+
 		return
 	end
 	
@@ -673,7 +701,7 @@ MultiBot:SetScript("OnEvent", function()
 			local tButton = MultiBot.frames["MultiBar"].frames["Units"].buttons[tName]
 			if(tButton == nil) then return end
 			tButton.waitFor = "CO"
-			SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", tName), "SAY")
+			-- SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", tName), "SAY")
 			SendChatMessage("co ?", "WHISPER", nil, tName)
 			tButton.setEnable()
 			--MultiBot.doRaid()
@@ -1117,7 +1145,7 @@ MultiBot:SetScript("OnEvent", function()
 		
 		if(MultiBot.isInside(arg1, "Hello", "你好")) then
 			tButton.waitFor = "CO"
-			SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", arg2), "SAY")
+			-- SendChatMessage(MultiBot.doReplace(MultiBot.info.combat, "NAME", arg2), "SAY")
 			SendChatMessage("co ?", "WHISPER", nil, arg2)	
 			--MultiBot.doRaid()
 			return
@@ -1189,7 +1217,7 @@ MultiBot:SetScript("OnEvent", function()
 		if(tButton.waitFor == "CO" and MultiBot.isInside(arg1, "Strategies: ")) then
 			tButton.waitFor = "NC"
 			tButton.combat = string.sub(arg1, 13)
-			SendChatMessage(MultiBot.doReplace(MultiBot.info.normal, "NAME", arg2), "SAY")
+			--SendChatMessage(MultiBot.doReplace(MultiBot.info.normal, "NAME", arg2), "SAY")
 			SendChatMessage("nc ?", "WHISPER", nil, arg2)		
 			return
 		end
@@ -1370,7 +1398,7 @@ SLASH_MULTIBOT1 = "/multibot"
 SLASH_MULTIBOT2 = "/mbot"
 SLASH_MULTIBOT3 = "/mb"
 
-SlashCmdList["MULTIBOT"] = function()
+--[[SlashCmdList["MULTIBOT"] = function()
 	if(MultiBot.state) then
 		for key, value in pairs(MultiBot.frames) do value:Hide() end
 		MultiBot.state = false
@@ -1378,6 +1406,26 @@ SlashCmdList["MULTIBOT"] = function()
 		for key, value in pairs(MultiBot.frames) do value:Show() end
 		MultiBot.state = true
 	end
+end]]--
+
+SlashCmdList["MULTIBOT"] = function()
+	-- don't touch to Shaman/Hunter bars
+	local function affect(frmKey, frm)
+		return frmKey ~= "ShamanQuick" and frmKey ~= "HunterQuick"
+	end
+	if MultiBot.state then
+		for key, value in pairs(MultiBot.frames) do
+			if affect(key, value) then value:Hide() end
+		end
+		MultiBot.state = false
+	else
+		for key, value in pairs(MultiBot.frames) do
+			if affect(key, value) then value:Show() end
+		end
+		MultiBot.state = true
+	end
+	-- Persist by character
+	MultiBotSave["UIVisible"] = MultiBot.state and true or false
 end
 
 SLASH_MULTIBOTOPTIONS1 = "/mbopt"

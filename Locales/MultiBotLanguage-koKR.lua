@@ -12,6 +12,32 @@ if(GetLocale() == "koKR") then
 [10] = "전사"
 }]]--
 
+-- ITEMS
+MultiBot.info.itemdestroyalert =
+"이 아이템을 정말로 파기하시겠습니까?\n%s";
+
+MultiBot.info.keydestroyalert =
+"열쇠는 판매하지 않습니다.";
+
+MultiBot.info.itemsellalert =
+"이 아이템은 판매할 수 없습니다.";
+
+ -- MINIMAP BUTTON
+MultiBot.info.butttitle = 
+"|cffffd100MultiBot|r"
+ 
+MultiBot.info.buttontoggle =
+"|cff00ff00좌클릭: UI 전환|r";
+ 
+MultiBot.info.buttonoptions =
+"|cffff0000우클릭: 옵션|r";
+ 
+MultiBot.info.buttonoptionshide =
+"미니맵 버튼 숨기기";
+ 
+MultiBot.info.buttonoptionshidetooltip =
+"MultiBot 미니맵 버튼을 숨기거나 표시합니다.\n(좌클릭: UI 전환, 우클릭: 옵션 열기)";
+
 -- GLYPHS
 MultiBot.info.glyphssocketnotunlocked =
 "이 소켓은 아직 잠금 해제되지 않았습니다.";
@@ -2584,55 +2610,72 @@ MultiBot.tips.shaman.totemsmove =
 "우클릭으로 토템바를 끌어서 이동합니다";
 
 MultiBot.tips.shaman.ctotem.stoe =
-"대지의 힘";
+"대지의 힘\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.stoskin =
-"돌가죽";
+"돌가죽\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.tremor =
-"진동";
+"진동\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.eabind =
-"속박의 토템";
+"속박의 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.searing =
-"불타는 토템";
+"불타는 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.magma =      
-"용암";
+"용암\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.fltong =  
-"불꽃의 혀";
+"불꽃의 혀\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.towrath = 
-"격노의 토템";
+"격노의 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.frostres = 
-"냉기 저항";
+"냉기 저항\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.healstream = 
-"치유의 토템";
+"치유의 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.manasprin = 
-"마나샘 토템";
+"마나샘 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.cleansing =
-"정화의 토템";
+"정화의 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.fireres =
-"화염 저항";
+"화염 저항\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.wrhatair =
-"질풍의 토템";
+"질풍의 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.windfury =
-"질풍";
+"질풍\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.natres =
-"자연 저항";
+"자연 저항\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.grounding =
-"마법흡수 토템";
+"마법흡수 토템\n\n"..
+"|cffff0000이 토템을 선택하거나 선택 해제하려면 왼쪽 클릭하세요|r\n";
 
 MultiBot.tips.shaman.ctotem.earthtot =
 "대지 토템";
