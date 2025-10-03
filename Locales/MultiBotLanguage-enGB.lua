@@ -14,6 +14,32 @@ if(GetLocale() == "enGB") then
 
 -- INFO --
 
+-- ITEMS
+MultiBot.info.itemdestroyalert = 
+"Do you REALLY want to destroy this item?\n%s";
+
+MultiBot.info.keydestroyalert = 
+"I will not sell Keys.";
+
+MultiBot.info.itemsellalert = 
+"I cant sell this Item.";
+
+-- MINIMAP BUTTON
+MultiBot.info.butttitle = 
+"|cffffd100MultiBot|r"
+
+MultiBot.info.buttontoggle =
+"|cff00ff00Left-click: toggle UI|r";
+
+MultiBot.info.buttonoptions =
+"|cffff0000Right-click: options|r";
+
+MultiBot.info.buttonoptionshide =
+"Hide minimap button";
+
+MultiBot.info.buttonoptionshidetooltip =
+"Hide or show the MultiBot minimap button.\n(Left-click: toggle UI, Right-click: open options)";
+
 -- GLYPHS
 MultiBot.info.glyphssocketnotunlocked =
 "This socket is not yet unlocked.";
@@ -789,8 +815,7 @@ MultiBot.tips.units.roster =
 "Roster Filters\n|cffffffff"..
 "Filter PlayerBots by roster type.|r\n\n"..
 "|cffff0000Left-click to show or hide the Options|r\n"..
-"|cff999999(Executed by: System)|r\n\n"..
-"|cffff0000Right-click to reset the Filter|r\n"..
+"|cffff0000Right-Click to switch to Active Roster|r\n"..
 "|cff999999(Executed by: System)|r";
 
 MultiBot.tips.units.actives =
@@ -2548,55 +2573,72 @@ MultiBot.tips.shaman.totemsmove =
 "Right-Click to drag and move the TotemBar";
 
 MultiBot.tips.shaman.ctotem.stoe =
-"Strength of Earth";
+"Strength of Earth\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.stoskin =
-"Stoneskin";
+"stoneskin\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.tremor =
-"Tremor";
+"Tremor\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.eabind =
-"Earthbind";
+"Earthbind\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.searing =
-"Searing";
+"Searing\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
-MultiBot.tips.shaman.ctotem.magma =
-"Magma";
+MultiBot.tips.shaman.ctotem.magma =      
+"Magma\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
-MultiBot.tips.shaman.ctotem.fltong =
-"Flametongue";
+MultiBot.tips.shaman.ctotem.fltong =  
+"Flametongue\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
-MultiBot.tips.shaman.ctotem.towrath =
-"Totem of Wrath";
+MultiBot.tips.shaman.ctotem.towrath = 
+"Totem of Wrath\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
-MultiBot.tips.shaman.ctotem.frostres =
-"Frost Resistance";
+MultiBot.tips.shaman.ctotem.frostres = 
+"Frost Resistance\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
-MultiBot.tips.shaman.ctotem.healstream =
-"Healing Stream";
+MultiBot.tips.shaman.ctotem.healstream = 
+"Healing Stream\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
-MultiBot.tips.shaman.ctotem.manasprin =
-"Mana Spring";
+MultiBot.tips.shaman.ctotem.manasprin = 
+"Mana Spring\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.cleansing =
-"Cleansing";
+"Cleansing\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.fireres =
-"Fire Resistance";
+"Fire Resistance\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.wrhatair =
-"Wrath of Air";
+"Wrath of Air\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.windfury =
-"Windfury";
+"Windfury\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.natres =
-"Nature Resistance";
+"Nature Resistance\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.grounding =
-"Grounding";
+"Grounding\n\n"..
+"|cffff0000Left-Click to select or remove this Totem|r\n";
 
 MultiBot.tips.shaman.ctotem.earthtot =
 "Earth Totems";

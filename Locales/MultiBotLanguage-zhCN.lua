@@ -12,6 +12,32 @@ if(GetLocale() == "zhCN") then
 [10] = "战士"
 }]]--
 
+-- ITEMS
+MultiBot.info.itemdestroyalert =
+"你真的要销毁这个物品吗？\n%s";
+
+MultiBot.info.keydestroyalert =
+"我不会出售钥匙。";
+
+MultiBot.info.itemsellalert =
+"我无法出售该物品。";
+
+-- MINIMAP BUTTON
+MultiBot.info.butttitle = 
+"|cffffd100MultiBot|r"
+ 
+MultiBot.info.buttontoggle =
+"|cff00ff00左键：切换界面|r";
+ 
+MultiBot.info.buttonoptions =
+"|cffff0000右键：选项|r";
+ 
+MultiBot.info.buttonoptionshide =
+"隐藏小地图按钮";
+ 
+MultiBot.info.buttonoptionshidetooltip =
+"隐藏或显示 MultiBot 的小地图按钮。\n（左键：切换界面，右键：打开选项）";
+
 -- GLYPHS
 MultiBot.info.glyphssocketnotunlocked =
 "该插槽尚未解锁。";
@@ -831,8 +857,7 @@ MultiBot.tips.units.roster =
 "团队筛选器\n|cffffffff"..
 "通过团队筛选器，你可以切换不同的团队。|r\n\n"..
 "|cffff0000左键单击显示或隐藏选项|r\n"..
-"|cff999999(执行命令: 系统)|r\n\n"..
-"|cffff0000右键单击重置筛选器|r\n"..
+"|cffff0000右键单击切换到活动名册|r\n"..
 "|cff999999(执行命令: 系统)|r";
 
 MultiBot.tips.units.actives =
@@ -2584,55 +2609,72 @@ MultiBot.tips.shaman.totemsmove =
 "右键点击以拖动和移动图腾栏";
 
 MultiBot.tips.shaman.ctotem.stoe =
-"大地之力";
+"大地之力\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.stoskin =
-"石肤";
+"石肤\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.tremor =
-"战栗";
+"战栗\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.eabind =
-"地缚";
+"地缚\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.searing =
-"灼热";
+"灼热\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.magma =      
-"熔岩";
+"熔岩\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.fltong =  
-"火舌";
+"火舌\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.towrath = 
-"天怒图腾";
+"天怒图腾\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.frostres = 
-"冰霜抗性";
+"冰霜抗性\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.healstream = 
-"治疗之泉";
+"治疗之泉\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.manasprin = 
-"法力之泉";
+"法力之泉\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.cleansing =
-"祛病";
+"祛病\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.fireres =
-"火焰抗性";
+"火焰抗性\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.wrhatair =
-"风之优雅";
+"风之优雅\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.windfury =
-"风怒";
+"风怒\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.natres =
-"自然抗性";
+"自然抗性\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.grounding =
-"根基";
+"根基\n\n"..
+"|cffff0000左键单击以选择或取消选择此图腾|r\n";
 
 MultiBot.tips.shaman.ctotem.earthtot =
 "大地图腾";
