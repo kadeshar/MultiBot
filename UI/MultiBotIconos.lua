@@ -1,4 +1,4 @@
-﻿MultiBot.data.iconos = {
+MultiBot.data.iconos = {
 [1] = "Interface\\Icons\\Ability_Ambush",
 [2] = "Interface\\Icons\\Ability_BackStab",
 [3] = "Interface\\Icons\\Ability_BullRush",
@@ -6001,38 +6001,42 @@
 MultiBot.iconos.addIcons = function(pNow)
 	local tIcons = MultiBot.iconos.frames["Icons"]
 	local tTable = MultiBot.data.iconos
-	
-	for key, value in pairs(tIcons.buttons) do value:Hide() end
-	table.wipe(tIcons.buttons)
-		
-	MultiBot.iconos.max = math.ceil(table.getn(tTable) / 112)
+
+	for key, value in pairs(tIcons.buttons) do
+		value:Hide()
+	end
+	wipe(tIcons.buttons)
+
+	local iconsCount = #tTable
+	MultiBot.iconos.max = math.ceil(iconsCount / 112)
+
 	MultiBot.iconos.now = MultiBot.IF(pNow ~= nil, pNow, MultiBot.iconos.now)
 	MultiBot.iconos.setText("Pages", MultiBot.iconos.now .. "/" .. MultiBot.iconos.max)
-	
+
 	if(MultiBot.iconos.max > MultiBot.iconos.now)
 	then MultiBot.iconos.buttons[">"]:Show()
 	else MultiBot.iconos.buttons[">"]:Hide()
 	end
-	
+
 	if(MultiBot.iconos.now == 1)
 	then MultiBot.iconos.buttons["<"]:Hide()
 	else MultiBot.iconos.buttons["<"]:Show()
 	end
-	
+
 	local tIndex = 0
 	local tFrom = (MultiBot.iconos.now - 1) * 112 + 1
 	local tTo = tFrom + 111
-	
-	if(tTo > table.getn(tTable)) then tTo = table.getn(tTable) end
-	
-	for i = tFrom, tTo do
-		local tIcon = tTable[i]
-		local tName = string.sub(tIcon, 17)
-		
-		local tX = (tIndex%8) * 38
-		local tY = math.floor(tIndex/8) * -37.25
-		
-		local tButton = tIcons.addButton(i, tX, tY, tIcon, tName .. "\n|cffffffff" .. tTable[i] .. "|r")
-		tIndex = tIndex + 1
+
+	if(tTo > iconsCount) then
+		tTo = iconsCount
 	end
+
+    for i = tFrom, tTo do
+        local tIcon = tTable[i]
+        local tName = string.sub(tIcon, 17)
+        local tX = (tIndex%8) * 38
+        local tY = math.floor(tIndex/8) * -37.25
+        tIcons.addButton(i, tX, tY, tIcon, tName .. "\n|cffffffff" .. tTable[i] .. "|r")
+        tIndex = tIndex + 1
+    end
 end

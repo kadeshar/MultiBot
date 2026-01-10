@@ -1,6 +1,7 @@
 # MultiBot
 User interface for AzerothCore-Module "Playerbots" by Playerbots team https://github.com/mod-playerbots/mod-playerbots.<br>
-Tested with American and German 3.3.5 Wotlk-Client.
+Tested with American, German, French and Spanish 3.3.5 Wotlk-Client.
+
 # Installation
 Simply place the files in a folder called "MultiBot" in your World of Warcraft AddOns directory.<br>
 Example: "C:\WorldOfWarcraft\Interface\AddOns\MultiBot"
@@ -11,13 +12,11 @@ Start World of Warcraft and enter "/multibot" or "/mbot" or "/mb" in the chat, o
 
 ## ⚠️ Notice — About This Fork
 
-This is a **temporary fork** of the original [MultiBot addon by Macx-Lio](https://github.com/Macx-Lio/MultiBot).
+This is a fork of the original [MultiBot addon by Macx-Lio](https://github.com/Macx-Lio/MultiBot).
 
 The reason for this fork is that I submitted several pull requests to the original repository, but since the creator, **Macx-Lio**, is currently unavailable, those changes could not be merged.
 
 To allow the community to benefit from the additional features and improvements I have implemented, I’ve published this fork **as a temporary solution**.
-
-As soon as the original author returns and is able to review and merge the contributions, this repository will be removed in favor of the official version.
 
 > **All credit for the original addon goes to Macx-Lio.** I do not claim ownership of this project — I’m simply maintaining a working version until development resumes on the main repository.
 

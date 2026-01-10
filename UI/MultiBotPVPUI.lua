@@ -1,6 +1,5 @@
--- UI/MultiBotPVPUI.lua
--- MultiBot PvP UI
-local ADDON = "MultiBot"
+-- MultiBot PvP UI with cache per bots
+-- local ADDON = "MultiBot"
 
 local function CreateStyledFrame()
     -- Main frame
@@ -26,7 +25,7 @@ local function CreateStyledFrame()
 
     -- Header + title
     local titleBg = f:CreateTexture(nil, "ARTWORK")
-    titleBg:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Header")
+    titleBg:SetTexture(MultiBot.SafeTexturePath("Interface\\DialogFrame\\UI-DialogBox-Header"))
     titleBg:SetPoint("TOPLEFT", f, "TOPLEFT", 12, -6)
     titleBg:SetPoint("TOPRIGHT", f, "TOPRIGHT", -12, -6)
     titleBg:SetHeight(48)
@@ -84,8 +83,14 @@ local function CreateStyledFrame()
     -- Header that will display bot name (updated from whisper sender)
     local customHeader = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     customHeader:SetPoint("TOPLEFT", content, "TOPLEFT", 0, -top)
-    customHeader:SetText("Données PvP custom")
+    customHeader:SetText(MultiBot.tips.every.pvpcustom)
     top = top + 18 + 6
+
+    -- Bot selector (cache par bot) - alimenté par les réponses [PVP] reçues en whisper
+    local botDropDown = CreateFrame("Frame", "MultiBotPVPBotDropDown", content, "UIDropDownMenuTemplate")
+    botDropDown:SetPoint("TOPRIGHT", content, "TOPRIGHT", 18, 10)
+    UIDropDownMenu_SetWidth(botDropDown, 180)
+    UIDropDownMenu_SetText(botDropDown, "Bot")
 
     -- HONNEUR section: only one row "Honneur"
     local honorHeight = 18 + 1 * 18 + 8
@@ -94,7 +99,7 @@ local function CreateStyledFrame()
     -- Column header labels for Honneur (1st renamed Total)
     local hdr1 = honor:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     hdr1:SetPoint("TOPRIGHT", honor, "TOPRIGHT", colOffsets[1], -2)
-    hdr1:SetText("Total")
+    hdr1:SetText(MultiBot.tips.every.pvptotal)
     --local hdr2 = honor:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     --hdr2:SetPoint("TOPRIGHT", honor, "TOPRIGHT", colOffsets[2], -2)
     --hdr2:SetText("Hier")
@@ -122,37 +127,37 @@ local function CreateStyledFrame()
     local arena = CreateSection(content, top, arenaBlockHeight * 3 + spacing * 2, "Arène")
 
     -- separator
-    local sepH = arena:CreateTexture(nil, "ARTWORK")
-    sepH:SetHeight(1)
-    sepH:SetPoint("TOPLEFT", arena, "TOPLEFT", 0, -18)
-    sepH:SetPoint("TOPRIGHT", arena, "TOPRIGHT", 0, -18)
-    sepH:SetTexture(0.5, 0.5, 0.5, 0.6)
+    local arenaSep = arena:CreateTexture(nil, "ARTWORK")
+    arenaSep:SetHeight(1)
+    arenaSep:SetPoint("TOPLEFT", arena, "TOPLEFT", 0, -18)
+    arenaSep:SetPoint("TOPRIGHT", arena, "TOPRIGHT", 0, -18)
+    arenaSep:SetTexture(0.5, 0.5, 0.5, 0.6)
 
     -- Points d'Arène (affiché à gauche de la section Arène)
     arena.pointsLabel = arena:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     arena.pointsLabel:SetPoint("TOPLEFT", arena, "TOPLEFT", 120, 0)
-    arena.pointsLabel:SetText("Points d'Arène:")
+    arena.pointsLabel:SetText(MultiBot.tips.every.pvparenapoints)
 
     arena.pointsValue = arena:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     arena.pointsValue:SetPoint("LEFT", arena.pointsLabel, "RIGHT", 6, 0)
     arena.pointsValue:SetText("-")
-	
+
     -- helper to create per-mode display inside arena
     local function CreateArenaModeRow(parent, idx, modeLabel, offsetY)
         -- mode title (e.g., "Mode: 2v2")
         local modeText = parent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         modeText:SetPoint("TOPLEFT", parent, "TOPLEFT", 4, -offsetY -32)
-        modeText:SetText("Mode: " .. modeLabel)
+        modeText:SetText(MultiBot.tips.every.pvparenamode .. modeLabel)
 
         -- team name
         local teamText = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
         teamText:SetPoint("TOPLEFT", parent, "TOPLEFT", 4, -offsetY - 50)
-        teamText:SetText("Equipe: No team")
+        teamText:SetText(MultiBot.tips.every.pvparenanoteam)
 
         -- rating
         local ratingText = parent:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
         ratingText:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -8, -offsetY - 34)
-        ratingText:SetText("Cote équipe: -")
+        ratingText:SetText(MultiBot.tips.every.pvparenanoteamrank)
 
         return { mode = modeText, team = teamText, rating = ratingText }
     end
@@ -161,22 +166,24 @@ local function CreateStyledFrame()
     local modes = { "2v2", "3v3", "5v5" }
     local arenaRows = {}
     for i = 1, 3 do
-        local offset = 0 + (i-1) * (arenaBlockHeight + spacing)
+        -- local offset = 0 + (i-1) * (arenaBlockHeight + spacing)
         arenaRows[modes[i]] = CreateArenaModeRow(arena, i, modes[i], 0 + (i-1) * (arenaBlockHeight + 6))
     end
 
-    top = top + arenaBlockHeight * 3 + spacing * 2
-
+    --top = top + arenaBlockHeight * 3 + spacing * 2
     -- Tabs (bottom)
     local tabs = {}
     --local tabNames = { "JcJ", "Dummy" }
 	local tabNames = { "JcJ" }
+
     for i, name in ipairs(tabNames) do
-        local template = (_G["CharacterFrameTabButtonTemplate"] and "CharacterFrameTabButtonTemplate") or "UIPanelButtonTemplate"
+        local template = (_G["CharacterFrameTabButtonTemplate"] and
+            "CharacterFrameTabButtonTemplate") or "UIPanelButtonTemplate"
         local tab = CreateFrame("Button", f:GetName() .. "Tab" .. i, f, template)
         tab:SetSize(90, 22)
         tab:SetText(name)
-        tab:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 12 + (i - 1) * 98, 12)
+        tab:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT",
+            12 + (i - 1) * 98, 12)
         tab.id = i
         tabs[i] = tab
     end
@@ -209,6 +216,7 @@ local function CreateStyledFrame()
     SelectTab(1)
 
     -- expose references for update from chat handler
+	f._botDropDown = botDropDown
 	f._arena = arena
     f._honorTotal = honorRow[1]
     f._arenaRows = arenaRows
@@ -217,15 +225,259 @@ local function CreateStyledFrame()
     return f
 end
 
+-- ==========================
+-- PvP cache par bot (whispers)
+-- ==========================
+
+local function MBPVP_NormalizeSenderName(sender)
+    if not sender or sender == "" then
+        return ""
+    end
+
+    local simpleName = sender:match("([^%-]+)") or sender
+    simpleName = simpleName:match("([^%.%-]+)") or simpleName
+    return simpleName
+end
+
+local function MBPVP_ExtractFirstTwoNumbers(line)
+    local a, b
+    for n in tostring(line):gmatch("(%d+)") do
+        if not a then
+            a = n
+        else
+            b = n
+            break
+        end
+    end
+    return a, b
+end
+
+-- Extrait un rating quel que soit le mot localisé:
+-- "(rating 1234)" "(cote 1234)" "(Wertung 1234)" "(评分 1234)" "(평점 1234)" etc.
+local function MBPVP_ExtractTeamRating(line)
+    return tostring(line):match("%(%s*[^%d]*(%d+)%s*%)")
+end
+
+local function MBPVP_PrefixFromTemplate(s, fallback)
+    if type(s) ~= "string" then
+        return fallback or ""
+    end
+
+    local p = s:match("^(.-:%s*)")
+    return p or (fallback or "")
+end
+
+local function MBPVP_EnsureCache(frame)
+    if not frame._botCache then
+        frame._botCache = {}
+    end
+end
+
+local function MBPVP_GetState(frame, botName)
+    MBPVP_EnsureCache(frame)
+
+    if not frame._botCache[botName] then
+        frame._botCache[botName] = {
+            honorPoints = nil,
+            arenaPoints = nil,
+            teams = {
+                ["2v2"] = { team = nil, rating = nil, noTeam = true },
+                ["3v3"] = { team = nil, rating = nil, noTeam = true },
+                ["5v5"] = { team = nil, rating = nil, noTeam = true },
+            },
+            lastUpdate = 0,
+        }
+    end
+
+    return frame._botCache[botName]
+end
+
+local function MBPVP_GetSortedBotList(frame)
+    MBPVP_EnsureCache(frame)
+
+    local list = {}
+    for name, st in pairs(frame._botCache) do
+        list[#list + 1] = { name = name, ts = st.lastUpdate or 0 }
+    end
+
+    table.sort(list, function(a, b)
+        if a.ts == b.ts then
+            return a.name < b.name
+        end
+        return a.ts > b.ts
+    end)
+
+    local out = {}
+    for _, v in ipairs(list) do
+        out[#out + 1] = v.name
+    end
+    return out
+end
+
+local function MBPVP_ApplyStateToUi(frame, botName)
+    if not frame or not botName or botName == "" then
+        return
+    end
+
+    MBPVP_EnsureCache(frame)
+
+    local st = frame._botCache[botName]
+    if not st then
+        return
+    end
+
+    -- Header
+    if frame._customHeader then
+        frame._customHeader:SetText(MultiBot.tips.every.pvparenadata .. botName)
+    end
+
+    -- Currency
+    if frame._honorTotal then
+        frame._honorTotal:SetText(st.honorPoints or "-")
+    end
+
+    if frame._arena and frame._arena.pointsValue then
+        frame._arena.pointsValue:SetText(st.arenaPoints or "-")
+    end
+
+    -- Rows
+    if frame._arenaRows then
+        local teamPrefix = MBPVP_PrefixFromTemplate(MultiBot.tips.every.pvparenanoteam, "Team: ")
+        local rankPrefix = MBPVP_PrefixFromTemplate(MultiBot.tips.every.pvparenanoteamrank, "Rating: ")
+
+        for _, mode in ipairs({ "2v2", "3v3", "5v5" }) do
+            local row = frame._arenaRows[mode]
+            local mt = st.teams and st.teams[mode]
+            if row then
+                row.mode:SetText(MultiBot.tips.every.pvparenamode .. mode)
+
+                if mt and mt.team then
+                    row.team:SetText(teamPrefix .. mt.team)
+                else
+                    row.team:SetText(MultiBot.tips.every.pvparenanoteam)
+                end
+
+                if mt and mt.rating then
+                    row.rating:SetText(rankPrefix .. mt.rating)
+                else
+                    row.rating:SetText(MultiBot.tips.every.pvparenanoteamrank)
+                end
+            end
+        end
+    end
+end
+
+local function MBPVP_SetCurrentBot(frame, botName)
+    if not frame then
+        return
+    end
+
+    frame._currentBot = botName
+
+    if frame._botDropDown then
+        UIDropDownMenu_SetSelectedValue(frame._botDropDown, botName)
+        UIDropDownMenu_SetText(frame._botDropDown, botName ~= "" and botName or "Bot")
+    end
+
+    MBPVP_ApplyStateToUi(frame, botName)
+end
+
+local function MBPVP_InitBotDropDown(frame)
+    if not frame or not frame._botDropDown or frame._botDropDown._mbInit then
+        return
+    end
+
+    frame._botDropDown._mbInit = true
+
+    UIDropDownMenu_Initialize(frame._botDropDown, function(self, level)
+        local bots = MBPVP_GetSortedBotList(frame)
+        for _, name in ipairs(bots) do
+            local info = UIDropDownMenu_CreateInfo()
+            info.text = name
+            info.value = name
+            info.func = function()
+                MBPVP_SetCurrentBot(frame, name)
+                if not frame:IsShown() then
+                    frame:Show()
+                end
+            end
+            info.checked = (frame._currentBot == name)
+            UIDropDownMenu_AddButton(info, level)
+        end
+    end)
+
+    UIDropDownMenu_SetText(frame._botDropDown, "Bot")
+end
+
+local function MBPVP_IsNoTeamMessage(msg)
+    if type(msg) ~= "string" then
+        return false
+    end
+
+    local lower = msg:lower()
+
+    -- EN + locales DB (text_loc1..8) de ton extract
+    if lower:find("i have no arena team", 1, true) or lower:find("no arena team", 1, true) then
+        return true
+    end
+    if msg:find("투기장 팀이 없습니다", 1, true) then return true end
+    if msg:find("Je n'ai aucune équipe d'arène", 1, true) then return true end
+    if msg:find("Ich habe kein Arenateam", 1, true) then return true end
+    if msg:find("我没有竞技场战队", 1, true) then return true end
+    if msg:find("我沒有競技場隊伍", 1, true) then return true end
+    if msg:find("No tengo equipo de arena", 1, true) then return true end
+    if msg:find("У меня нет команды арены", 1, true) then return true end
+
+    return false
+end
+
 -- Create frame on login and listen for whispers
 local loader = CreateFrame("Frame")
 loader:RegisterEvent("PLAYER_LOGIN")
 loader:RegisterEvent("CHAT_MSG_WHISPER")
+
+local function NormalizeSenderName(sender)
+    if not sender or sender == "" then
+        return ""
+    end
+
+    -- Strip realm if present ("Name-Realm") and any separators you already used elsewhere
+    local simpleName = sender:match("([^%-]+)") or sender
+    simpleName = simpleName:match("([^%.%-]+)") or simpleName
+    return simpleName
+end
+
+local function ResetPvpUi(frame)
+    if not frame then return end
+
+    if frame._honorTotal then
+        frame._honorTotal:SetText("-")
+    end
+    if frame._arena and frame._arena.pointsValue then
+        frame._arena.pointsValue:SetText("-")
+    end
+
+    if frame._arenaRows then
+        for _, mode in ipairs({ "2v2", "3v3", "5v5" }) do
+            local row = frame._arenaRows[mode]
+            if row then
+                row.mode:SetText(MultiBot.tips.every.pvparenamode .. mode)
+                row.team:SetText(MultiBot.tips.every.pvparenanoteam)
+                row.rating:SetText(MultiBot.tips.every.pvparenanoteamrank)
+            end
+        end
+    end
+end
+
 loader:SetScript("OnEvent", function(self, event, ...)
     if event == "PLAYER_LOGIN" then
         if not MultiBotPVPFrame then
             MultiBotPVPFrame = CreateStyledFrame()
         end
+
+        MBPVP_EnsureCache(MultiBotPVPFrame)
+        MBPVP_InitBotDropDown(MultiBotPVPFrame)
+
         return
     end
 
@@ -233,77 +485,90 @@ loader:SetScript("OnEvent", function(self, event, ...)
         local msg, sender = ...
         if not MultiBotPVPFrame then return end
 
-        -- Update header with sender name (strip realm if present)
-        if sender and MultiBotPVPFrame._customHeader then
-            local simpleName = sender:match("([^%-]+)") or sender
-            simpleName = simpleName:match("([^%.%-]+)") or simpleName
-            MultiBotPVPFrame._customHeader:SetText("Données PvP " .. simpleName)
-        end
+        if type(msg) ~= "string" then return end
 
-        -- Parse Honor Points (both languages)
-        local honor = msg:match("Honor Points:%s*(%d+)") or msg:match("Honor:%s*(%d+)") or msg:match("Honneur:%s*(%d+)")
-        if honor and MultiBotPVPFrame._honorTotal then
-            MultiBotPVPFrame._honorTotal:SetText(honor)
-        end
-
-        -- Parse Arena points (English or localized variants)
-        local arenaPoints = msg:match("Arena points:%s*(%d+)") or msg:match("Arena points%s*[:]%s*(%d+)") or msg:match("Points d'Arène:%s*(%d+)")
-        if arenaPoints and MultiBotPVPFrame._arena then
-            MultiBotPVPFrame._arena.pointsValue:SetText(arenaPoints)
-        end
-		
-        -- Detect explicit "no team" messages (English/French)
-        local noTeamMsg = msg:lower():find("no[%s_-]*team") or msg:lower():find("i have no arena team") or msg:lower():find("pas d'?équipe") or msg:lower():find("pas d'?équipe d'arène")
-        if noTeamMsg then
-            -- Set all modes to No team / rating 0
-            for _, mode in ipairs({"2v2","3v3","5v5"}) do
-                local row = MultiBotPVPFrame._arenaRows[mode]
-                if row then
-                    row.mode:SetText("Mode: " .. mode)
-                    row.team:SetText("Equipe: No team")
-                    row.rating:SetText("Cote équipe: 0")
-                end
-            end
+        -- Ouvrir la frame uniquement sur les réponses PvP du module playerbots
+        if not msg:find("%[PVP%]") then
             return
         end
 
-        -- Otherwise parse per-mode lines and update matching rows
-        for _, modePattern in ipairs({ "2v2", "3v3", "5v5" }) do
-            -- try strict pattern: mode followed by colon and <Team> and (rating N)
-            local pattern1 = modePattern .. "%s*[:]?%s*<([^>]+)>%s*%(%s*rating%s*(%d+)%s*%)"
-            local team1, rating1 = msg:match(pattern1)
-            if team1 then
-                local row = MultiBotPVPFrame._arenaRows[modePattern]
-                if row then
-                    row.mode:SetText("Mode: " .. modePattern)
-                    row.team:SetText("Equipe: " .. team1)
-                    row.rating:SetText("Cote équipe: " .. rating1)
+        local simpleName = NormalizeSenderName(sender)
+
+        -- Si on reçoit un nouveau bot, on réinitialise l'affichage pour éviter de mélanger les données
+        if MultiBotPVPFrame._currentSender ~= simpleName then
+            MultiBotPVPFrame._currentSender = simpleName
+            ResetPvpUi(MultiBotPVPFrame)
+        end
+
+        -- Ouvre la frame dès qu'un bot répond
+        if not MultiBotPVPFrame:IsShown() then
+            MultiBotPVPFrame:Show()
+        end
+
+        if type(msg) ~= "string" then
+            return
+        end
+
+        -- Ne traiter que les réponses PvP du module playerbots
+        if not msg:find("%[PVP%]") then
+            return
+        end
+
+        MBPVP_InitBotDropDown(MultiBotPVPFrame)
+
+        local botName = MBPVP_NormalizeSenderName(sender)
+        if botName == "" then
+            return
+        end
+
+        local st = MBPVP_GetState(MultiBotPVPFrame, botName)
+        st.lastUpdate = time()
+
+        -- 1) Ligne currency: toujours un "|" et 2 nombres dans l'ordre (arena_points puis honor_points)
+        if msg:find("|", 1, true) then
+            local arenaPoints, honorPoints = MBPVP_ExtractFirstTwoNumbers(msg)
+            if arenaPoints then st.arenaPoints = arenaPoints end
+            if honorPoints then st.honorPoints = honorPoints end
+        else
+            local bracket = msg:match("([235]v[235])")
+
+            -- 2) Message global "no arena team" (EN + locales DB)
+            if MBPVP_IsNoTeamMessage(msg) then
+                for _, mode in ipairs({ "2v2", "3v3", "5v5" }) do
+                    st.teams[mode] = st.teams[mode] or {}
+                    st.teams[mode].team = nil
+                    st.teams[mode].rating = nil
                 end
-            else
-                -- looser pattern: mode then team (with or without <>), then rating
-                local pattern2 = modePattern .. "[:%s]*<?([^>%(]+)>?%s*%(%s*rating%s*(%d+)%s*%)"
-                local team2, rating2 = msg:match(pattern2)
-                if team2 then
-                    local row = MultiBotPVPFrame._arenaRows[modePattern]
-                    if row then
-                        row.mode:SetText("Mode: " .. modePattern)
-                        row.team:SetText("Equipe: " .. team2)
-                        row.rating:SetText("Cote équipe: " .. rating2)
-                    end
+            -- 3) Ligne par bracket: "[PVP] 5v5 : <TeamName> (motLocalisé 1047)"
+            elseif bracket then
+                st.teams[bracket] = st.teams[bracket] or {}
+
+                local team = msg:match("<([^>]+)>")
+                local rating = MBPVP_ExtractTeamRating(msg)
+
+                if team then
+                    st.teams[bracket].team = team
+                    st.teams[bracket].rating = rating
                 else
-                    -- fallback: if message contains modePattern and a <Team> somewhere, use them
-                    if msg:match(modePattern) then
-                        local team3 = msg:match("<([^>]+)>")
-                        local rating3 = msg:match("rating%s*(%d+)")
-                        if team3 and MultiBotPVPFrame._arenaRows[modePattern] then
-                            local row = MultiBotPVPFrame._arenaRows[modePattern]
-                            row.mode:SetText("Mode: " .. modePattern)
-                            row.team:SetText("Equipe: " .. team3)
-                            if rating3 then row.rating:SetText("Cote équipe: " .. rating3) end
-                        end
-                    end
+                    -- Bracket présent mais pas de nom d'équipe => on réinitialise ce bracket
+                    st.teams[bracket].team = nil
+                    st.teams[bracket].rating = nil
                 end
             end
+        end
+
+        -- Ouvre la frame dès qu'un bot répond
+        if not MultiBotPVPFrame:IsShown() then
+            MultiBotPVPFrame:Show()
+        end
+
+        -- Sélection automatique:
+        -- - si aucune sélection en cours, on sélectionne le bot qui vient de répondre
+        -- - sinon, on n'écrase pas l'affichage (cache seulement), sauf si c'est le bot affiché
+        if not MultiBotPVPFrame._currentBot or MultiBotPVPFrame._currentBot == "" then
+            MBPVP_SetCurrentBot(MultiBotPVPFrame, botName)
+        elseif MultiBotPVPFrame._currentBot == botName then
+            MBPVP_ApplyStateToUi(MultiBotPVPFrame, botName)
         end
     end
 end)
